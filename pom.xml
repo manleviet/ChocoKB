@@ -7,8 +7,11 @@
     <groupId>at.tugraz.ist.ase</groupId>
     <artifactId>ChocoKB</artifactId>
     <version>1.0</version>
+    <packaging>jar</packaging>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
     </properties>
@@ -20,5 +23,28 @@
             <version>4.10.2</version>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub manleviet Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/manleviet/ChocoKB</url>
+        </repository>
+    </distributionManagement>
+
+    <build>
+        <finalName>ChocoKB-1.0-alpha</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

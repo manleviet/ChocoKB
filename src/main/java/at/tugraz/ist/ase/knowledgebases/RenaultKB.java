@@ -18,7 +18,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RenaultKB implements KB {
 
@@ -543,14 +549,55 @@ public class RenaultKB implements KB {
     public void defineConstraints() {
         unaryConstraints = defineUnaryConstraints();
 
-        File folder = new File("./renault_rules");
+        // read all files from a resources folder
+        try {
 
-        for (final File file : folder.listFiles()) {
-            if (file.getName().contains(".pm")) {
-                System.out.println("Reading " + file.getName());
-                readRule(file);
+            // files from src/main/resources/renault_rules
+            List<File> result = getAllFilesFromResource("renault_rules");
+            for (File file : result) {
+                if (file.getName().contains(".pm")) {
+                    System.out.println("Reading " + file.getName());
+                    readRule(file);
+                }
+
+//                System.out.println("file : " + file);
+//                printFile(file);
             }
+
+        } catch (URISyntaxException | IOException e) {
+            e.printStackTrace();
         }
+
+//        getClass().getResource()
+//        String path = getClass().getResource("renault_rules").toString();
+//        File folder = new File("renault_rules");
+//
+//        Files.
+//
+//        Files.exists(new Path("renault_rules"));
+//
+//        for (final File file : folder.listFiles()) {
+//            if (file.getName().contains(".pm")) {
+//                System.out.println("Reading " + file.getName());
+//                readRule(file);
+//            }
+//        }
+    }
+
+    private List<File> getAllFilesFromResource(String folder)
+            throws URISyntaxException, IOException {
+
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        URL resource = classLoader.getResource(folder);
+
+        // dun walk the root path, we will walk all the classes
+        List<File> collect = Files.walk(Paths.get(resource.toURI()))
+                                            .filter(Files::isRegularFile)
+                                            .map(x -> x.toFile())
+                                            .collect(Collectors.toList());
+
+        return collect;
     }
 
     private void readRule(File file) {

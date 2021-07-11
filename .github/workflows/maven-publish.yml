@@ -33,6 +33,7 @@ jobs:
 
     - uses: actions/delete-package-versions@v1
       with:
+        package-name: at.tugraz.ist.ase.choco-kb
         num-old-versions-to-delete: 1
 
     - name: Publish to GitHub Packages Apache Maven

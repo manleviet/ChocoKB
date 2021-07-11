@@ -7,24 +7,16 @@
  * Email: manleviet@gmail.com
  */
 
-package at.tugraz.ist.ase.knowledgebases;
+package at.tugraz.ist.ase.knowledgebases.renault;
 
 import at.tugraz.ist.ase.knowledgebases.core.KB;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.variables.IntVar;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class RenaultKB implements KB {
 
@@ -36,6 +28,19 @@ public class RenaultKB implements KB {
     int[] domainSizes = new int[numberOfVariables];
 
     List<Constraint> unaryConstraints;
+
+    List<String> ruleFiles = List.of("001.pm", "002.pm", "003.pm", "004.pm", "005.pm", "006.pm", "007.pm", "008.pm", "009.pm", "010.pm",
+                                    "011.pm", "012.pm", "013.pm", "014.pm", "015.pm", "016.pm", "017.pm", "018.pm", "019.pm", "020.pm",
+                                    "021.pm", "022.pm", "023.pm", "024.pm", "025.pm", "026.pm", "027.pm", "028.pm", "029.pm", "030.pm",
+                                    "031.pm", "032.pm", "033.pm", "034.pm", "035.pm", "036.pm", "037.pm", "038.pm", "039.pm", "040.pm",
+                                    "041.pm", "042.pm", "043.pm", "044.pm", "045.pm", "046.pm", "047.pm", "048.pm", "049.pm", "050.pm",
+                                    "051.pm", "052.pm", "053.pm", "054.pm", "055.pm", "056.pm", "057.pm", "058.pm", "059.pm", "060.pm",
+                                    "061.pm", "062.pm", "063.pm", "064.pm", "065.pm", "066.pm", "067.pm", "068.pm", "069.pm", "070.pm",
+                                    "071.pm", "072.pm", "073.pm", "074.pm", "075.pm", "076.pm", "077.pm", "078.pm", "079.pm", "080.pm",
+                                    "081.pm", "082.pm", "083.pm", "084.pm", "085.pm", "086.pm", "087.pm", "088.pm", "089.pm", "090.pm",
+                                    "091.pm", "092.pm", "093.pm", "094.pm", "095.pm", "096.pm", "097.pm", "098.pm", "099.pm", "100.pm",
+                                    "101.pm", "102.pm", "103.pm", "104.pm", "105.pm", "106.pm", "107.pm", "108.pm", "109.pm", "110.pm",
+                                    "111.pm", "112.pm", "113.pm");
 
     public RenaultKB(){
         defineVariableValues();
@@ -543,70 +548,30 @@ public class RenaultKB implements KB {
         vars[95] = this.modelKB.intVar("Var98",domains[i++]);
         vars[96] = this.modelKB.intVar("Var99", domains[i++]);
         vars[97] = this.modelKB.intVar("Var100", domains[i++]);
-        vars[98] = this.modelKB.intVar("Var101", domains[i++]);
+        vars[98] = this.modelKB.intVar("Var101", domains[i]);
     }
 
     public void defineConstraints() {
         unaryConstraints = defineUnaryConstraints();
 
-        // read all files from a resources folder
-        try {
-
-            // files from src/main/resources/renault_rules
-            List<File> result = getAllFilesFromResource("renault_rules");
-            for (File file : result) {
-                if (file.getName().contains(".pm")) {
-                    System.out.println("Reading " + file.getName());
-                    readRule(file);
-                }
-
-//                System.out.println("file : " + file);
-//                printFile(file);
-            }
-
-        } catch (URISyntaxException | IOException e) {
-            e.printStackTrace();
-        }
-
-//        getClass().getResource()
-//        String path = getClass().getResource("renault_rules").toString();
-//        File folder = new File("renault_rules");
-//
-//        Files.
-//
-//        Files.exists(new Path("renault_rules"));
-//
-//        for (final File file : folder.listFiles()) {
-//            if (file.getName().contains(".pm")) {
-//                System.out.println("Reading " + file.getName());
-//                readRule(file);
-//            }
-//        }
-    }
-
-    private List<File> getAllFilesFromResource(String folder)
-            throws URISyntaxException, IOException {
-
         ClassLoader classLoader = getClass().getClassLoader();
 
-        URL resource = classLoader.getResource(folder);
+        for (String ruleFile : ruleFiles) {
+            InputStream inputStream = classLoader.getResourceAsStream("renault_rules/renault_rule" + ruleFile);
 
-        // dun walk the root path, we will walk all the classes
-        List<File> collect = Files.walk(Paths.get(resource.toURI()))
-                                            .filter(Files::isRegularFile)
-                                            .map(x -> x.toFile())
-                                            .collect(Collectors.toList());
+            if (inputStream != null) {
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
-        return collect;
+                System.out.println("Reading renault_rule" + ruleFile);
+                readRule(reader);
+            }
+        }
     }
 
-    private void readRule(File file) {
-        BufferedReader reader;
+    private void readRule(BufferedReader reader) {
         try {
-
-            // Open file
-            reader = new BufferedReader(new FileReader(file));
-            String line = reader.readLine(); // ignore
+            String line = reader.readLine(); // ignore the first line
 
             Constraint constraint = or(reader);
             constraint.post();
@@ -1702,8 +1667,7 @@ public class RenaultKB implements KB {
     public static List<Constraint> arrayToList(Constraint[] cstrs)
     {
         List<Constraint> l = new ArrayList<Constraint>();
-        for (int i=0; i<cstrs.length; i++)
-            l.add(cstrs[i]);
+        Collections.addAll(l, cstrs);
         return l;
     }
 
@@ -1717,904 +1681,904 @@ public class RenaultKB implements KB {
     }
 
     public int getIndexVariable(String var) {
-        switch (var) {
-            case "Var1": return 0;
-            case "Var2": return 1;
-            case "Var3": return 2;
-            case "Var4": return 3;
-            case "Var5": return 4;
-            case "Var6": return 5;
-            case "Var7": return 6;
-            case "Var8": return 7;
-            case "Var9": return 8;
-            case "Var10": return 9;
-            case "Var11": return 10;
-            case "Var12": return 11;
-            case "Var13": return 12;
-            case "Var14": return 13;
-            case "Var15": return 14;
-            case "Var16": return 15;
-            case "Var17": return 16;
-            case "Var18": return 17;
-            case "Var19": return 18;
-            case "Var20": return 19;
-            case "Var21": return 20;
-            case "Var22": return 21;
-            case "Var23": return 22;
-            case "Var24": return 23;
-            case "Var25": return 24;
-            case "Var26": return 25;
-            case "Var27": return 26;
-            case "Var28": return 27;
-            case "Var29": return 28;
-            case "Var30": return 29;
-            case "Var31": return 30;
-            case "Var32": return 31;
-            case "Var33": return 32;
-            case "Var34": return 33;
-            case "Var35": return 34;
-            case "Var36": return 35;
-            case "Var39": return 36;
-            case "Var40": return 37;
-            case "Var41": return 38;
-            case "Var42": return 39;
-            case "Var43": return 40;
-            case "Var44": return 41;
-            case "Var45": return 42;
-            case "Var46": return 43;
-            case "Var47": return 44;
-            case "Var48": return 45;
-            case "Var49": return 46;
-            case "Var50": return 47;
-            case "Var51": return 48;
-            case "Var52": return 49;
-            case "Var53": return 50;
-            case "Var54": return 51;
-            case "Var55": return 52;
-            case "Var56": return 53;
-            case "Var57": return 54;
-            case "Var58": return 55;
-            case "Var59": return 56;
-            case "Var60": return 57;
-            case "Var61": return 58;
-            case "Var62": return 59;
-            case "Var63": return 60;
-            case "Var64": return 61;
-            case "Var65": return 62;
-            case "Var66": return 63;
-            case "Var67": return 64;
-            case "Var68": return 65;
-            case "Var69": return 66;
-            case "Var70": return 67;
-            case "Var71": return 68;
-            case "Var72": return 69;
-            case "Var73": return 70;
-            case "Var74": return 71;
-            case "Var75": return 72;
-            case "Var76": return 73;
-            case "Var77": return 74;
-            case "Var78": return 75;
-            case "Var79": return 76;
-            case "Var80": return 77;
-            case "Var81": return 78;
-            case "Var82": return 79;
-            case "Var83": return 80;
-            case "Var84": return 81;
-            case "Var85": return 82;
-            case "Var86": return 83;
-            case "Var87": return 84;
-            case "Var88": return 85;
-            case "Var89": return 86;
-            case "Var90": return 87;
-            case "Var91": return 88;
-            case "Var92": return 89;
-            case "Var93": return 90;
-            case "Var94": return 91;
-            case "Var95": return 92;
-            case "Var96": return 93;
-            case "Var97": return 94;
-            case "Var98": return 95;
-            case "Var99": return 96;
-            case "Var100": return 97;
-            case "Var101": return 98;
-            default: return -1;
-        }
+        return switch (var) {
+            case "Var1" -> 0;
+            case "Var2" -> 1;
+            case "Var3" -> 2;
+            case "Var4" -> 3;
+            case "Var5" -> 4;
+            case "Var6" -> 5;
+            case "Var7" -> 6;
+            case "Var8" -> 7;
+            case "Var9" -> 8;
+            case "Var10" -> 9;
+            case "Var11" -> 10;
+            case "Var12" -> 11;
+            case "Var13" -> 12;
+            case "Var14" -> 13;
+            case "Var15" -> 14;
+            case "Var16" -> 15;
+            case "Var17" -> 16;
+            case "Var18" -> 17;
+            case "Var19" -> 18;
+            case "Var20" -> 19;
+            case "Var21" -> 20;
+            case "Var22" -> 21;
+            case "Var23" -> 22;
+            case "Var24" -> 23;
+            case "Var25" -> 24;
+            case "Var26" -> 25;
+            case "Var27" -> 26;
+            case "Var28" -> 27;
+            case "Var29" -> 28;
+            case "Var30" -> 29;
+            case "Var31" -> 30;
+            case "Var32" -> 31;
+            case "Var33" -> 32;
+            case "Var34" -> 33;
+            case "Var35" -> 34;
+            case "Var36" -> 35;
+            case "Var39" -> 36;
+            case "Var40" -> 37;
+            case "Var41" -> 38;
+            case "Var42" -> 39;
+            case "Var43" -> 40;
+            case "Var44" -> 41;
+            case "Var45" -> 42;
+            case "Var46" -> 43;
+            case "Var47" -> 44;
+            case "Var48" -> 45;
+            case "Var49" -> 46;
+            case "Var50" -> 47;
+            case "Var51" -> 48;
+            case "Var52" -> 49;
+            case "Var53" -> 50;
+            case "Var54" -> 51;
+            case "Var55" -> 52;
+            case "Var56" -> 53;
+            case "Var57" -> 54;
+            case "Var58" -> 55;
+            case "Var59" -> 56;
+            case "Var60" -> 57;
+            case "Var61" -> 58;
+            case "Var62" -> 59;
+            case "Var63" -> 60;
+            case "Var64" -> 61;
+            case "Var65" -> 62;
+            case "Var66" -> 63;
+            case "Var67" -> 64;
+            case "Var68" -> 65;
+            case "Var69" -> 66;
+            case "Var70" -> 67;
+            case "Var71" -> 68;
+            case "Var72" -> 69;
+            case "Var73" -> 70;
+            case "Var74" -> 71;
+            case "Var75" -> 72;
+            case "Var76" -> 73;
+            case "Var77" -> 74;
+            case "Var78" -> 75;
+            case "Var79" -> 76;
+            case "Var80" -> 77;
+            case "Var81" -> 78;
+            case "Var82" -> 79;
+            case "Var83" -> 80;
+            case "Var84" -> 81;
+            case "Var85" -> 82;
+            case "Var86" -> 83;
+            case "Var87" -> 84;
+            case "Var88" -> 85;
+            case "Var89" -> 86;
+            case "Var90" -> 87;
+            case "Var91" -> 88;
+            case "Var92" -> 89;
+            case "Var93" -> 90;
+            case "Var94" -> 91;
+            case "Var95" -> 92;
+            case "Var96" -> 93;
+            case "Var97" -> 94;
+            case "Var98" -> 95;
+            case "Var99" -> 96;
+            case "Var100" -> 97;
+            case "Var101" -> 98;
+            default -> -1;
+        };
     }
 
     public int getIndexValue(String var, String value) {
         switch (var) {
             case "Var1":
-                switch (value) {
-                    case "B64": return 0;
-                    case "D64": return 1;
-                    case "E64": return 2;
-                    case "F64": return 3;
-                    case "J64": return 4;
-                    case "K25": return 5;
-                    case "L64": return 6;
-                    case "S64": return 7;
-                    case "V25": return 8;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "B64" -> 0;
+                    case "D64" -> 1;
+                    case "E64" -> 2;
+                    case "F64" -> 3;
+                    case "J64" -> 4;
+                    case "K25" -> 5;
+                    case "L64" -> 6;
+                    case "S64" -> 7;
+                    case "V25" -> 8;
+                    default -> -1;
+                };
             case "Var2":
-                switch (value) {
-                    case "E0": return 0;
-                    case "E1": return 1;
-                    case "E2": return 2;
-                    case "E3": return 3;
-                    case "E5": return 4;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "E0" -> 0;
+                    case "E1" -> 1;
+                    case "E2" -> 2;
+                    case "E3" -> 3;
+                    case "E5" -> 4;
+                    default -> -1;
+                };
             case "Var3":
-                switch (value) {
-                    case "M5": return 0;
-                    case "M6": return 1;
-                    case "M7": return 2;
-                    case "M8": return 3;
-                    case "M9": return 4;
-                    case "MA": return 5;
-                    case "MB": return 6;
-                    case "MC": return 7;
-                    case "MD": return 8;
-                    case "ME": return 9;
-                    case "MF": return 10;
-                    case "MG": return 11;
-                    case "MH": return 12;
-                    case "MJ": return 13;
-                    case "MK": return 14;
-                    case "ML": return 15;
-                    case "MM": return 16;
-                    case "MN": return 17;
-                    case "MS": return 18;
-                    case "MT": return 19;
-                    case "MU": return 20;
-                    case "MY": return 21;
-                    case "ND1G": return 22;
-                    case "NM0C": return 23;
-                    case "NM2K": return 24;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "M5" -> 0;
+                    case "M6" -> 1;
+                    case "M7" -> 2;
+                    case "M8" -> 3;
+                    case "M9" -> 4;
+                    case "MA" -> 5;
+                    case "MB" -> 6;
+                    case "MC" -> 7;
+                    case "MD" -> 8;
+                    case "ME" -> 9;
+                    case "MF" -> 10;
+                    case "MG" -> 11;
+                    case "MH" -> 12;
+                    case "MJ" -> 13;
+                    case "MK" -> 14;
+                    case "ML" -> 15;
+                    case "MM" -> 16;
+                    case "MN" -> 17;
+                    case "MS" -> 18;
+                    case "MT" -> 19;
+                    case "MU" -> 20;
+                    case "MY" -> 21;
+                    case "ND1G" -> 22;
+                    case "NM0C" -> 23;
+                    case "NM2K" -> 24;
+                    default -> -1;
+                };
             case "Var4":
-                switch (value) {
-                    case "DIESEL": return 0;
-                    case "ESS": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "DIESEL" -> 0;
+                    case "ESS" -> 1;
+                    default -> -1;
+                };
             case "Var5":
-                switch (value) {
-                    case "AFSU": return 0;
-                    case "ALLE": return 1;
-                    case "ARGE": return 2;
-                    case "AUST": return 3;
-                    case "AUTR": return 4;
-                    case "BELG": return 5;
-                    case "BRES": return 6;
-                    case "CETI": return 7;
-                    case "CHIL": return 8;
-                    case "COLO": return 9;
-                    case "DAIB": return 10;
-                    case "DAIC": return 11;
-                    case "DAID": return 12;
-                    case "DAIF": return 13;
-                    case "DANE": return 14;
-                    case "DOTO": return 15;
-                    case "ESPA": return 16;
-                    case "EUOR": return 17;
-                    case "FINL": return 18;
-                    case "FRAN": return 19;
-                    case "GRBR": return 20;
-                    case "GREC": return 21;
-                    case "HOLL": return 22;
-                    case "HONG": return 23;
-                    case "IRLA": return 24;
-                    case "ISLA": return 25;
-                    case "ISRA": return 26;
-                    case "ITAL": return 27;
-                    case "JAPO": return 28;
-                    case "MAGH": return 29;
-                    case "MARO": return 30;
-                    case "NORV": return 31;
-                    case "POLO": return 32;
-                    case "PORT": return 33;
-                    case "SLVQ": return 34;
-                    case "SUED": return 35;
-                    case "SUIS": return 36;
-                    case "TAIW": return 37;
-                    case "TCHE": return 38;
-                    case "TURQ": return 39;
-                    case "URUG": return 40;
-                    case "YOUG": return 41;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "AFSU" -> 0;
+                    case "ALLE" -> 1;
+                    case "ARGE" -> 2;
+                    case "AUST" -> 3;
+                    case "AUTR" -> 4;
+                    case "BELG" -> 5;
+                    case "BRES" -> 6;
+                    case "CETI" -> 7;
+                    case "CHIL" -> 8;
+                    case "COLO" -> 9;
+                    case "DAIB" -> 10;
+                    case "DAIC" -> 11;
+                    case "DAID" -> 12;
+                    case "DAIF" -> 13;
+                    case "DANE" -> 14;
+                    case "DOTO" -> 15;
+                    case "ESPA" -> 16;
+                    case "EUOR" -> 17;
+                    case "FINL" -> 18;
+                    case "FRAN" -> 19;
+                    case "GRBR" -> 20;
+                    case "GREC" -> 21;
+                    case "HOLL" -> 22;
+                    case "HONG" -> 23;
+                    case "IRLA" -> 24;
+                    case "ISLA" -> 25;
+                    case "ISRA" -> 26;
+                    case "ITAL" -> 27;
+                    case "JAPO" -> 28;
+                    case "MAGH" -> 29;
+                    case "MARO" -> 30;
+                    case "NORV" -> 31;
+                    case "POLO" -> 32;
+                    case "PORT" -> 33;
+                    case "SLVQ" -> 34;
+                    case "SUED" -> 35;
+                    case "SUIS" -> 36;
+                    case "TAIW" -> 37;
+                    case "TCHE" -> 38;
+                    case "TURQ" -> 39;
+                    case "URUG" -> 40;
+                    case "YOUG" -> 41;
+                    default -> -1;
+                };
             case "Var6":
-                switch (value) {
-                    case "DD": return 0;
-                    case "DG": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "DD" -> 0;
+                    case "DG" -> 1;
+                    default -> -1;
+                };
             case "Var7":
-                switch (value) {
-                    case "GDFROI": return 0;
-                    case "TEMP": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "GDFROI" -> 0;
+                    case "TEMP" -> 1;
+                    default -> -1;
+                };
             case "Var8":
-                switch (value) {
-                    case "CPLG": return 0;
-                    case "CPLN": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "CPLG" -> 0;
+                    case "CPLN" -> 1;
+                    default -> -1;
+                };
             case "Var9":
-                switch (value) {
-                    case "DA": return 0;
-                    case "DM": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "DA" -> 0;
+                    case "DM" -> 1;
+                    default -> -1;
+                };
             case "Var10":
-                switch (value) {
-                    case "SANCOA": return 0;
-                    default: return -1;
+                if ("SANCOA".equals(value)) {
+                    return 0;
                 }
+                return -1;
             case "Var11":
-                switch (value) {
-                    case "ABS": return 0;
-                    case "SSABS": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "ABS" -> 0;
+                    case "SSABS" -> 1;
+                    default -> -1;
+                };
             case "Var12":
-                switch (value) {
-                    case "GALERI": return 0;
-                    case "SGALER": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "GALERI" -> 0;
+                    case "SGALER" -> 1;
+                    default -> -1;
+                };
             case "Var13":
-                switch (value) {
-                    case "CA": return 0;
-                    case "CHAUFO": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "CA" -> 0;
+                    case "CHAUFO" -> 1;
+                    default -> -1;
+                };
             case "Var14":
-                switch (value) {
-                    case "CAPVMA": return 0;
-                    case "CATOEL": return 1;
-                    case "CATOMA": return 2;
-                    case "TN": return 3;
-                    case "TO": return 4;
-                    case "TODEGO": return 5;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "CAPVMA" -> 0;
+                    case "CATOEL" -> 1;
+                    case "CATOMA" -> 2;
+                    case "TN" -> 3;
+                    case "TO" -> 4;
+                    case "TODEGO" -> 5;
+                    default -> -1;
+                };
             case "Var15":
-                switch (value) {
-                    case "PBCH": return 0;
-                    case "PBNCH": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "PBCH" -> 0;
+                    case "PBNCH" -> 1;
+                    default -> -1;
+                };
             case "Var16":
-                switch (value) {
-                    case "VC": return 0;
-                    case "VT": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "VC" -> 0;
+                    case "VT" -> 1;
+                    default -> -1;
+                };
             case "Var17":
-                switch (value) {
-                    case "SPRTEL": return 0;
-                    default: return -1;
+                if ("SPRTEL".equals(value)) {
+                    return 0;
                 }
+                return -1;
             case "Var18":
-                switch (value) {
-                    case "ELA": return 0;
-                    case "SSELA": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "ELA" -> 0;
+                    case "SSELA" -> 1;
+                    default -> -1;
+                };
             case "Var19":
-                switch (value) {
-                    case "CPE": return 0;
-                    case "SSCPE": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "CPE" -> 0;
+                    case "SSCPE" -> 1;
+                    default -> -1;
+                };
             case "Var20":
-                switch (value) {
-                    case "SSTIR": return 0;
-                    case "TIR": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "SSTIR" -> 0;
+                    case "TIR" -> 1;
+                    default -> -1;
+                };
             case "Var21":
-                switch (value) {
-                    case "RETROE": return 0;
-                    case "RETROR": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "RETROE" -> 0;
+                    case "RETROR" -> 1;
+                    default -> -1;
+                };
             case "Var22":
-                switch (value) {
-                    case "REGSIT": return 0;
-                    case "SSRSIT": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "REGSIT" -> 0;
+                    case "SSRSIT" -> 1;
+                    default -> -1;
+                };
             case "Var23":
-                switch (value) {
-                    case "PROJAB": return 0;
-                    case "SPROJA": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "PROJAB" -> 0;
+                    case "SPROJA" -> 1;
+                    default -> -1;
+                };
             case "Var24":
-                switch (value) {
-                    case "SSARCE": return 0;
-                    default: return -1;
+                if ("SSARCE".equals(value)) {
+                    return 0;
                 }
+                return -1;
             case "Var25":
-                switch (value) {
-                    case "CUSFIX": return 0;
-                    case "CUSPIV": return 1;
-                    case "SANCUS": return 2;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "CUSFIX" -> 0;
+                    case "CUSPIV" -> 1;
+                    case "SANCUS" -> 2;
+                    default -> -1;
+                };
             case "Var26":
-                switch (value) {
-                    case "CLB": return 0;
-                    case "CLCGRI": return 1;
-                    case "SANCL": return 2;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "CLB" -> 0;
+                    case "CLCGRI" -> 1;
+                    case "SANCL" -> 2;
+                    default -> -1;
+                };
             case "Var27":
-                switch (value) {
-                    case "ADAC": return 0;
-                    case "SADAC": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "ADAC" -> 0;
+                    case "SADAC" -> 1;
+                    default -> -1;
+                };
             case "Var28":
-                switch (value) {
-                    case "CCHBAG": return 0;
-                    case "SCCHBA": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "CCHBAG" -> 0;
+                    case "SCCHBA" -> 1;
+                    default -> -1;
+                };
             case "Var29":
-                switch (value) {
-                    case "CUI": return 0;
-                    case "DRA": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "CUI" -> 0;
+                    case "DRA" -> 1;
+                    default -> -1;
+                };
             case "Var30":
-                switch (value) {
-                    case "ATARPH": return 0;
-                    case "CRIT3ATRPH": return 1;
-                    case "SSATAR": return 2;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "ATARPH" -> 0;
+                    case "CRIT3ATRPH" -> 1;
+                    case "SSATAR" -> 2;
+                    default -> -1;
+                };
             case "Var31":
-                switch (value) {
-                    case "BANAR": return 0;
-                    case "CRIT3SJAR": return 1;
-                    case "CRIT3SJARI": return 2;
-                    case "FBANAR": return 3;
-                    case "FBARAC": return 4;
-                    case "SBANAR": return 5;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "BANAR" -> 0;
+                    case "CRIT3SJAR" -> 1;
+                    case "CRIT3SJARI" -> 2;
+                    case "FBANAR" -> 3;
+                    case "FBARAC" -> 4;
+                    case "SBANAR" -> 5;
+                    default -> -1;
+                };
             case "Var32":
-                switch (value) {
-                    case "SGMANU": return 0;
-                    case "SGMEMO": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "SGMANU" -> 0;
+                    case "SGMEMO" -> 1;
+                    default -> -1;
+                };
             case "Var33":
-                switch (value) {
-                    case "KM": return 0;
-                    case "MILES": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "KM" -> 0;
+                    case "MILES" -> 1;
+                    default -> -1;
+                };
             case "Var34":
-                switch (value) {
-                    case "Autre167": return 0;
-                    case "CPK01": return 1;
-                    case "CPK02": return 2;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "Autre167" -> 0;
+                    case "CPK01" -> 1;
+                    case "CPK02" -> 2;
+                    default -> -1;
+                };
             case "Var35":
-                switch (value) {
-                    case "RIDOAR": return 0;
-                    case "SRIDAR": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "RIDOAR" -> 0;
+                    case "SRIDAR" -> 1;
+                    default -> -1;
+                };
             case "Var36":
-                switch (value) {
-                    case "PTCAV": return 0;
-                    default: return -1;
+                if ("PTCAV".equals(value)) {
+                    return 0;
                 }
+                return -1;
             case "Var39":
-                switch (value) {
-                    case "CATADI": return 0;
-                    case "SCATAD": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "CATADI" -> 0;
+                    case "SCATAD" -> 1;
+                    default -> -1;
+                };
             case "Var40":
-                switch (value) {
-                    case "EMBNOR": return 0;
-                    case "EMBPIL": return 1;
-                    case "SEMBRY": return 2;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "EMBNOR" -> 0;
+                    case "EMBPIL" -> 1;
+                    case "SEMBRY" -> 2;
+                    default -> -1;
+                };
             case "Var41":
-                switch (value) {
-                    case "PNERFL": return 0;
-                    case "PNESTD": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "PNERFL" -> 0;
+                    case "PNESTD" -> 1;
+                    default -> -1;
+                };
             case "Var42":
-                switch (value) {
-                    case "PHAN01": return 0;
-                    case "PHAN02": return 1;
-                    case "SSPHAN": return 2;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "PHAN01" -> 0;
+                    case "PHAN02" -> 1;
+                    case "SSPHAN" -> 2;
+                    default -> -1;
+                };
             case "Var43":
-                switch (value) {
-                    case "ETPN01": return 0;
-                    case "ETPN02": return 1;
-                    case "SSETPN": return 2;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "ETPN01" -> 0;
+                    case "ETPN02" -> 1;
+                    case "SSETPN" -> 2;
+                    default -> -1;
+                };
             case "Var44":
-                switch (value) {
-                    case "Autre272": return 0;
-                    case "EQGPL": return 1;
-                    case "PREGPL": return 2;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "Autre272" -> 0;
+                    case "EQGPL" -> 1;
+                    case "PREGPL" -> 2;
+                    default -> -1;
+                };
             case "Var45":
-                switch (value) {
-                    case "SUSNOR": return 0;
-                    case "SUSREN": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "SUSNOR" -> 0;
+                    case "SUSREN" -> 1;
+                    default -> -1;
+                };
             case "Var46":
-                switch (value) {
-                    case "RENTC": return 0;
-                    case "RETC": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "RENTC" -> 0;
+                    case "RETC" -> 1;
+                    default -> -1;
+                };
             case "Var47":
-                switch (value) {
-                    case "LVAVEL": return 0;
-                    case "LVAVMA": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "LVAVEL" -> 0;
+                    case "LVAVMA" -> 1;
+                    default -> -1;
+                };
             case "Var48":
-                switch (value) {
-                    case "LVAREL": return 0;
-                    case "LVARMA": return 1;
-                    case "SSLVAR": return 2;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "LVAREL" -> 0;
+                    case "LVARMA" -> 1;
+                    case "SSLVAR" -> 2;
+                    default -> -1;
+                };
             case "Var49":
-                switch (value) {
-                    case "Autre310": return 0;
-                    case "SSAMVA": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "Autre310" -> 0;
+                    case "SSAMVA" -> 1;
+                    default -> -1;
+                };
             case "Var50":
-                switch (value) {
-                    case "SASURV": return 0;
-                    default: return -1;
+                if ("SASURV".equals(value)) {
+                    return 0;
                 }
+                return -1;
             case "Var51":
-                switch (value) {
-                    case "SGACHA": return 0;
-                    case "SGSCHA": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "SGACHA" -> 0;
+                    case "SGSCHA" -> 1;
+                    default -> -1;
+                };
             case "Var52":
-                switch (value) {
-                    case "COFIXE": return 0;
-                    case "COLOMB": return 1;
-                    case "COREHA": return 2;
-                    case "CORHLO": return 3;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "COFIXE" -> 0;
+                    case "COLOMB" -> 1;
+                    case "COREHA" -> 2;
+                    case "CORHLO" -> 3;
+                    default -> -1;
+                };
             case "Var53":
-                switch (value) {
-                    case "AVPFIL": return 0;
-                    case "SSPFIL": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "AVPFIL" -> 0;
+                    case "SSPFIL" -> 1;
+                    default -> -1;
+                };
             case "Var54":
-                switch (value) {
-                    case "NAVIG": return 0;
-                    case "SNAVIG": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "NAVIG" -> 0;
+                    case "SNAVIG" -> 1;
+                    default -> -1;
+                };
             case "Var55":
-                switch (value) {
-                    case "CRIT2RHENF": return 0;
-                    case "RHENF": return 1;
-                    case "SRHENF": return 2;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "CRIT2RHENF" -> 0;
+                    case "RHENF" -> 1;
+                    case "SRHENF" -> 2;
+                    default -> -1;
+                };
             case "Var56":
-                switch (value) {
-                    case "APL01": return 0;
-                    case "APL02": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "APL01" -> 0;
+                    case "APL02" -> 1;
+                    default -> -1;
+                };
             case "Var57":
-                switch (value) {
-                    case "AILAR": return 0;
-                    case "SAILAR": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "AILAR" -> 0;
+                    case "SAILAR" -> 1;
+                    default -> -1;
+                };
             case "Var58":
-                switch (value) {
-                    case "MGMAZE": return 0;
-                    case "MGMECO": return 1;
-                    case "MGMINI": return 2;
-                    case "MGMRNA": return 3;
-                    case "MGMRNE": return 4;
-                    case "MGMRTA": return 5;
-                    case "MGMRTE": return 6;
-                    case "MGMRXT": return 7;
-                    case "RL": return 8;
-                    case "RN": return 9;
-                    case "RT": return 10;
-                    case "RXE": return 11;
-                    case "SMONEQ": return 12;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "MGMAZE" -> 0;
+                    case "MGMECO" -> 1;
+                    case "MGMINI" -> 2;
+                    case "MGMRNA" -> 3;
+                    case "MGMRNE" -> 4;
+                    case "MGMRTA" -> 5;
+                    case "MGMRTE" -> 6;
+                    case "MGMRXT" -> 7;
+                    case "RL" -> 8;
+                    case "RN" -> 9;
+                    case "RT" -> 10;
+                    case "RXE" -> 11;
+                    case "SMONEQ" -> 12;
+                    default -> -1;
+                };
             case "Var59":
-                switch (value) {
-                    case "RUNLI": return 0;
-                    case "SRUNLI": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "RUNLI" -> 0;
+                    case "SRUNLI" -> 1;
+                    default -> -1;
+                };
             case "Var60":
-                switch (value) {
-                    case "LAVPH": return 0;
-                    case "SLAVPH": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "LAVPH" -> 0;
+                    case "SLAVPH" -> 1;
+                    default -> -1;
+                };
             case "Var61":
-                switch (value) {
-                    case "EVCFIX": return 0;
-                    case "EVCVAR": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "EVCFIX" -> 0;
+                    case "EVCVAR" -> 1;
+                    default -> -1;
+                };
             case "Var62":
-                switch (value) {
-                    case "AOEF": return 0;
-                    case "SAOEF": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "AOEF" -> 0;
+                    case "SAOEF" -> 1;
+                    default -> -1;
+                };
             case "Var63":
-                switch (value) {
-                    case "VOLNRH": return 0;
-                    case "VOLRH": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "VOLNRH" -> 0;
+                    case "VOLRH" -> 1;
+                    default -> -1;
+                };
             case "Var64":
-                switch (value) {
-                    case "PANP00": return 0;
-                    case "PANP01": return 1;
-                    case "PANP02": return 2;
-                    case "PANP03": return 3;
-                    case "PANP05": return 4;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "PANP00" -> 0;
+                    case "PANP01" -> 1;
+                    case "PANP02" -> 2;
+                    case "PANP03" -> 3;
+                    case "PANP05" -> 4;
+                    default -> -1;
+                };
             case "Var65":
-                switch (value) {
-                    case "PLAFNT": return 0;
-                    case "PLAFT": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "PLAFNT" -> 0;
+                    case "PLAFT" -> 1;
+                    default -> -1;
+                };
             case "Var66":
-                switch (value) {
-                    case "JANALU": return 0;
-                    case "JANTOL": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "JANALU" -> 0;
+                    case "JANTOL" -> 1;
+                    default -> -1;
+                };
             case "Var67":
-                switch (value) {
-                    case "T0": return 0;
-                    case "T1": return 1;
-                    case "T2": return 2;
-                    case "T3": return 3;
-                    case "T5": return 4;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "T0" -> 0;
+                    case "T1" -> 1;
+                    case "T2" -> 2;
+                    case "T3" -> 3;
+                    case "T5" -> 4;
+                    default -> -1;
+                };
             case "Var68":
-                switch (value) {
-                    case "PSCOMI": return 0;
-                    case "PSCOMR": return 1;
-                    case "PSCOPO": return 2;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "PSCOMI" -> 0;
+                    case "PSCOMR" -> 1;
+                    case "PSCOPO" -> 2;
+                    default -> -1;
+                };
             case "Var69":
-                switch (value) {
-                    case "PSPAMI": return 0;
-                    case "PSPAMR": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "PSPAMI" -> 0;
+                    case "PSPAMR" -> 1;
+                    default -> -1;
+                };
             case "Var70":
-                switch (value) {
-                    case "ETAP01": return 0;
-                    case "ETAP03": return 1;
-                    case "SSETAP": return 2;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "ETAP01" -> 0;
+                    case "ETAP03" -> 1;
+                    case "SSETAP" -> 2;
+                    default -> -1;
+                };
             case "Var71":
-                switch (value) {
-                    case "FSTPO": return 0;
-                    default: return -1;
+                if ("FSTPO".equals(value)) {
+                    return 0;
                 }
+                return -1;
             case "Var72":
-                switch (value) {
-                    case "DUCA": return 0;
-                    case "FUJI": return 1;
-                    case "KANG": return 2;
-                    case "ODIN": return 3;
-                    case "PARALL": return 4;
-                    case "PARBRE": return 5;
-                    case "PARGBR": return 6;
-                    case "PARPOL": return 7;
-                    case "PARTCH": return 8;
-                    case "SSEDNC": return 9;
-                    case "VRMI": return 10;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "DUCA" -> 0;
+                    case "FUJI" -> 1;
+                    case "KANG" -> 2;
+                    case "ODIN" -> 3;
+                    case "PARALL" -> 4;
+                    case "PARBRE" -> 5;
+                    case "PARGBR" -> 6;
+                    case "PARPOL" -> 7;
+                    case "PARTCH" -> 8;
+                    case "SSEDNC" -> 9;
+                    case "VRMI" -> 10;
+                    default -> -1;
+                };
             case "Var73":
-                switch (value) {
-                    case "TBOR00": return 0;
-                    case "TBOR01": return 1;
-                    case "TBOR02": return 2;
-                    case "TBOR03": return 3;
-                    case "TBOR05": return 4;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "TBOR00" -> 0;
+                    case "TBOR01" -> 1;
+                    case "TBOR02" -> 2;
+                    case "TBOR03" -> 3;
+                    case "TBOR05" -> 4;
+                    default -> -1;
+                };
             case "Var74":
-                switch (value) {
-                    case "PBOR00": return 0;
-                    case "PBOR01": return 1;
-                    case "PBOR02": return 2;
-                    case "PBOR03": return 3;
-                    case "PBOR05": return 4;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "PBOR00" -> 0;
+                    case "PBOR01" -> 1;
+                    case "PBOR02" -> 2;
+                    case "PBOR03" -> 3;
+                    case "PBOR05" -> 4;
+                    default -> -1;
+                };
             case "Var75":
-                switch (value) {
-                    case "MOCY01": return 0;
-                    case "MOCY02": return 1;
-                    case "MOCY03": return 2;
-                    case "MOCY04": return 3;
-                    case "MOCY05": return 4;
-                    case "MOCY06": return 5;
-                    case "MOCY07": return 6;
-                    case "MOCY08": return 7;
-                    case "MOCY10": return 8;
-                    case "MOCY11": return 9;
-                    case "MOCY12": return 10;
-                    case "SSMOCY": return 11;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "MOCY01" -> 0;
+                    case "MOCY02" -> 1;
+                    case "MOCY03" -> 2;
+                    case "MOCY04" -> 3;
+                    case "MOCY05" -> 4;
+                    case "MOCY06" -> 5;
+                    case "MOCY07" -> 6;
+                    case "MOCY08" -> 7;
+                    case "MOCY10" -> 8;
+                    case "MOCY11" -> 9;
+                    case "MOCY12" -> 10;
+                    case "SSMOCY" -> 11;
+                    default -> -1;
+                };
             case "Var76":
-                switch (value) {
-                    case "Autre408": return 0;
-                    case "NINAV1": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "Autre408" -> 0;
+                    case "NINAV1" -> 1;
+                    default -> -1;
+                };
             case "Var77":
-                switch (value) {
-                    case "ABPA01": return 0;
-                    case "SSABPA": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "ABPA01" -> 0;
+                    case "SSABPA" -> 1;
+                    default -> -1;
+                };
             case "Var78":
-                switch (value) {
-                    case "FIPOU": return 0;
-                    case "SFIPOU": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "FIPOU" -> 0;
+                    case "SFIPOU" -> 1;
+                    default -> -1;
+                };
             case "Var79":
-                switch (value) {
-                    case "ABCO01": return 0;
-                    case "SSABCO": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "ABCO01" -> 0;
+                    case "SSABCO" -> 1;
+                    default -> -1;
+                };
             case "Var80":
-                switch (value) {
-                    case "ANSRAD": return 0;
-                    case "CRIT2X5KS": return 1;
-                    case "CRIT2X8KI": return 2;
-                    case "CRIT4X15CI": return 3;
-                    case "CRIT4X15KI": return 4;
-                    case "CRIT4X25KI": return 5;
-                    case "SRADIO": return 6;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "ANSRAD" -> 0;
+                    case "CRIT2X5KS" -> 1;
+                    case "CRIT2X8KI" -> 2;
+                    case "CRIT4X15CI" -> 3;
+                    case "CRIT4X15KI" -> 4;
+                    case "CRIT4X25KI" -> 5;
+                    case "SRADIO" -> 6;
+                    default -> -1;
+                };
             case "Var81":
-                switch (value) {
-                    case "BVA4": return 0;
-                    case "BVM5": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "BVA4" -> 0;
+                    case "BVM5" -> 1;
+                    default -> -1;
+                };
             case "Var82":
-                switch (value) {
-                    case "NMAS01": return 0;
-                    case "NMAS02": return 1;
-                    case "NMAS03": return 2;
-                    case "NMAS04": return 3;
-                    case "NMAS05": return 4;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "NMAS01" -> 0;
+                    case "NMAS02" -> 1;
+                    case "NMAS03" -> 2;
+                    case "NMAS04" -> 3;
+                    case "NMAS05" -> 4;
+                    default -> -1;
+                };
             case "Var83":
-                switch (value) {
-                    case "Autre432": return 0;
-                    case "PLARPT": return 1;
-                    case "PLARVN": return 2;
-                    case "PLARVO": return 3;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "Autre432" -> 0;
+                    case "PLARPT" -> 1;
+                    case "PLARVN" -> 2;
+                    case "PLARVO" -> 3;
+                    default -> -1;
+                };
             case "Var84":
-                switch (value) {
-                    case "ECLAR": return 0;
-                    case "SECLAR": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "ECLAR" -> 0;
+                    case "SECLAR" -> 1;
+                    default -> -1;
+                };
             case "Var85":
-                switch (value) {
-                    case "CDCOF": return 0;
-                    case "SCDCOF": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "CDCOF" -> 0;
+                    case "SCDCOF" -> 1;
+                    default -> -1;
+                };
             case "Var86":
-                switch (value) {
-                    case "ACPLAR": return 0;
-                    case "SACPLA": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "ACPLAR" -> 0;
+                    case "SACPLA" -> 1;
+                    default -> -1;
+                };
             case "Var87":
-                switch (value) {
-                    case "MONORM": return 0;
-                    case "SURMO1": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "MONORM" -> 0;
+                    case "SURMO1" -> 1;
+                    default -> -1;
+                };
             case "Var88":
-                switch (value) {
-                    case "Autre497": return 0;
-                    case "JANDIF": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "Autre497" -> 0;
+                    case "JANDIF" -> 1;
+                    default -> -1;
+                };
             case "Var89":
-                switch (value) {
-                    case "Autre513": return 0;
-                    case "EVA": return 1;
-                    case "EVE": return 2;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "Autre513" -> 0;
+                    case "EVA" -> 1;
+                    case "EVE" -> 2;
+                    default -> -1;
+                };
             case "Var90":
-                switch (value) {
-                    case "ANTID": return 0;
-                    case "ANTIDI": return 1;
-                    case "SDPCLV": return 2;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "ANTID" -> 0;
+                    case "ANTIDI" -> 1;
+                    case "SDPCLV" -> 2;
+                    default -> -1;
+                };
             case "Var91":
-                switch (value) {
-                    case "Autre613": return 0;
-                    case "TKO": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "Autre613" -> 0;
+                    case "TKO" -> 1;
+                    default -> -1;
+                };
             case "Var92":
-                switch (value) {
-                    case "Autre713": return 0;
-                    case "CPNT01": return 1;
-                    case "CPNT02": return 2;
-                    case "CPNT03": return 3;
-                    case "EQDIF": return 4;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "Autre713" -> 0;
+                    case "CPNT01" -> 1;
+                    case "CPNT02" -> 2;
+                    case "CPNT03" -> 3;
+                    case "EQDIF" -> 4;
+                    default -> -1;
+                };
             case "Var93":
-                switch (value) {
-                    case "Autre714": return 0;
-                    case "BVDIF": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "Autre714" -> 0;
+                    case "BVDIF" -> 1;
+                    default -> -1;
+                };
             case "Var94":
-                switch (value) {
-                    case "CRIT1503": return 0;
-                    case "EU00": return 1;
-                    case "EU93": return 2;
-                    case "EU96": return 3;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "CRIT1503" -> 0;
+                    case "EU00" -> 1;
+                    case "EU93" -> 2;
+                    case "EU96" -> 3;
+                    default -> -1;
+                };
             case "Var95":
-                switch (value) {
-                    case "CRIT1149CC": return 0;
-                    case "CRIT1390CC": return 1;
-                    case "CRIT1598CC": return 2;
-                    case "CRIT1870CC": return 3;
-                    case "CRIT1998CC": return 4;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "CRIT1149CC" -> 0;
+                    case "CRIT1390CC" -> 1;
+                    case "CRIT1598CC" -> 2;
+                    case "CRIT1870CC" -> 3;
+                    case "CRIT1998CC" -> 4;
+                    default -> -1;
+                };
             case "Var96":
-                switch (value) {
-                    case "CRIT060CV": return 0;
-                    case "CRIT065CV": return 1;
-                    case "CRIT070CV": return 2;
-                    case "CRIT075CV": return 3;
-                    case "CRIT090CV": return 4;
-                    case "CRIT095CV": return 5;
-                    case "CRIT100CV": return 6;
-                    case "CRIT105CV": return 7;
-                    case "CRIT115CV": return 8;
-                    case "CRIT150CV": return 9;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "CRIT060CV" -> 0;
+                    case "CRIT065CV" -> 1;
+                    case "CRIT070CV" -> 2;
+                    case "CRIT075CV" -> 3;
+                    case "CRIT090CV" -> 4;
+                    case "CRIT095CV" -> 5;
+                    case "CRIT100CV" -> 6;
+                    case "CRIT105CV" -> 7;
+                    case "CRIT115CV" -> 8;
+                    case "CRIT150CV" -> 9;
+                    default -> -1;
+                };
             case "Var97":
-                switch (value) {
-                    case "BCNTC": return 0;
-                    case "BCTC": return 1;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "BCNTC" -> 0;
+                    case "BCTC" -> 1;
+                    default -> -1;
+                };
             case "Var98":
-                switch (value) {
-                    case "AZE": return 0;
-                    case "Autre913": return 1;
-                    case "CPTECO": return 2;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "AZE" -> 0;
+                    case "Autre913" -> 1;
+                    case "CPTECO" -> 2;
+                    default -> -1;
+                };
             case "Var99":
-                switch (value) {
-                    case "AD4": return 0;
-                    case "DP0": return 1;
-                    case "JB1": return 2;
-                    case "JB3": return 3;
-                    case "JC5": return 4;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "AD4" -> 0;
+                    case "DP0" -> 1;
+                    case "JB1" -> 2;
+                    case "JB3" -> 3;
+                    case "JC5" -> 4;
+                    default -> -1;
+                };
             case "Var100":
-                switch (value) {
-                    case "CRIT620": return 0;
-                    case "CRIT622": return 1;
-                    case "CRIT624": return 2;
-                    case "CRIT700": return 3;
-                    case "CRIT701": return 4;
-                    case "CRIT702": return 5;
-                    case "CRIT703": return 6;
-                    case "CRIT710": return 7;
-                    case "CRIT714": return 8;
-                    case "CRIT720": return 9;
-                    case "CRIT730": return 10;
-                    case "CRIT731": return 11;
-                    case "CRIT732": return 12;
-                    case "CRIT733": return 13;
-                    case "CRIT734": return 14;
-                    case "CRIT736": return 15;
-                    case "CRIT740": return 16;
-                    case "CRIT750": return 17;
-                    case "CRIT751": return 18;
-                    case "CRIT752": return 19;
-                    case "CRIT764": return 20;
-                    case "CRIT784": return 21;
-                    case "CRIT786": return 22;
-                    case "CRIT788": return 23;
-                    case "CRIT790": return 24;
-                    case "CRIT791": return 25;
-                    case "CRIT796": return 26;
-                    case "CRIT797": return 27;
-                    case "CRIT798": return 28;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "CRIT620" -> 0;
+                    case "CRIT622" -> 1;
+                    case "CRIT624" -> 2;
+                    case "CRIT700" -> 3;
+                    case "CRIT701" -> 4;
+                    case "CRIT702" -> 5;
+                    case "CRIT703" -> 6;
+                    case "CRIT710" -> 7;
+                    case "CRIT714" -> 8;
+                    case "CRIT720" -> 9;
+                    case "CRIT730" -> 10;
+                    case "CRIT731" -> 11;
+                    case "CRIT732" -> 12;
+                    case "CRIT733" -> 13;
+                    case "CRIT734" -> 14;
+                    case "CRIT736" -> 15;
+                    case "CRIT740" -> 16;
+                    case "CRIT750" -> 17;
+                    case "CRIT751" -> 18;
+                    case "CRIT752" -> 19;
+                    case "CRIT764" -> 20;
+                    case "CRIT784" -> 21;
+                    case "CRIT786" -> 22;
+                    case "CRIT788" -> 23;
+                    case "CRIT790" -> 24;
+                    case "CRIT791" -> 25;
+                    case "CRIT796" -> 26;
+                    case "CRIT797" -> 27;
+                    case "CRIT798" -> 28;
+                    default -> -1;
+                };
             case "Var101":
-                switch (value) {
-                    case "D7F": return 0;
-                    case "E7J": return 1;
-                    case "F3R": return 2;
-                    case "F4R": return 3;
-                    case "F7R": return 4;
-                    case "F8Q": return 5;
-                    case "F9Q": return 6;
-                    case "K4J": return 7;
-                    case "K4M": return 8;
-                    case "K7M": return 9;
-                    default: return -1;
-                }
+                return switch (value) {
+                    case "D7F" -> 0;
+                    case "E7J" -> 1;
+                    case "F3R" -> 2;
+                    case "F4R" -> 3;
+                    case "F7R" -> 4;
+                    case "F8Q" -> 5;
+                    case "F9Q" -> 6;
+                    case "K4J" -> 7;
+                    case "K4M" -> 8;
+                    case "K7M" -> 9;
+                    default -> -1;
+                };
             default: return -1;
         }
     }

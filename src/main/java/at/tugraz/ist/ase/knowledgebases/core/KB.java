@@ -13,17 +13,17 @@ import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.IntVar;
 
 public interface KB {
-    public Model getModelKB();
-    public void setModelKB(Model m);
+    Model getModelKB();
+    void setModelKB(Model m);
 
-    public int getNumberOfVariables();
-    public void setNumberOfVariables(int n);
+    int getNumberOfVariables();
+    void setNumberOfVariables(int n);
 
-    public IntVar[] getVars();
-    public void setVars(IntVar[] v);
+    IntVar[] getVars();
+    void setVars(IntVar[] v);
 
-    public void defineVariables();
-    public void defineConstraints();
+    void defineVariables();
+    void defineConstraints();
 
-    public int [][] getDomains();
+    int [][] getDomains();
 }

@@ -16,11 +16,10 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 
 public class RenaultKBTest {
-    RenaultKB renault;
+    RenaultKB renault = new RenaultKB();
 
     @BeforeMethod
     public void setUp() {
-        renault = new RenaultKB();
     }
 
     @Test

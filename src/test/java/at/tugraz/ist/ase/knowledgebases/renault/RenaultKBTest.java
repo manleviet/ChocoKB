@@ -7,13 +7,11 @@
  * Email: manleviet@gmail.com
  */
 
-package at.tugraz.ist.ase.knowledgebases;
+package at.tugraz.ist.ase.knowledgebases.renault;
 
 import at.tugraz.ist.ase.knowledgebases.renault.RenaultKB;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import static org.testng.Assert.*;
 
 public class RenaultKBTest {
     RenaultKB renault = new RenaultKB();
@@ -41,15 +39,19 @@ public class RenaultKBTest {
 //    @Test
 //    public void testDefineVariableValues() {
 //    }
-//
-//    @Test
-//    public void testDefineVariables() {
-//    }
-//
-//    @Test
-//    public void testDefineConstraints() {
-//    }
-//
+
+    @Test
+    public void testDefineVariables() {
+//        System.out.println(renault.getModelKB().getNbVars());
+        assert renault.getModelKB().getNbVars() == 588472;
+    }
+
+    @Test
+    public void testDefineConstraints() {
+//        System.out.println(renault.getModelKB().getNbCstrs());
+        assert renault.getModelKB().getNbCstrs() == 392603;
+    }
+
 //    @Test
 //    public void testGetModelKB() {
 //    }
@@ -57,19 +59,16 @@ public class RenaultKBTest {
 //    @Test
 //    public void testSetModelKB() {
 //    }
-
-    @Test
-    public void testGetNumberOfVariables() {
-//        System.out.println(renault.getModelKB().getNbVars());
-        assert renault.getModelKB().getNbVars() == 588472;
-    }
-
-    @Test
-    public void testSetNumberOfVariables() {
-//        System.out.println(renault.getModelKB().getNbCstrs());
-        assert renault.getModelKB().getNbCstrs() == 392603;
-    }
-
+//
+//    @Test
+//    public void testGetNumberOfVariables() {
+//    }
+//
+//    @Test
+//    public void testSetNumberOfVariables() {
+//
+//    }
+//
 //    @Test
 //    public void testGetVars() {
 //    }

@@ -1,6 +1,6 @@
 # ChocoKB - at.tugraz.ist.ase.choco-kb
 
-A Maven package for Choco Knowledge Bases
+A Maven package for Configuration Knowledge Bases in Choco Solver
 
 Knowledge bases:
 

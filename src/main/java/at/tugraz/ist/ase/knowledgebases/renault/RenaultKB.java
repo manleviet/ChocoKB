@@ -43,12 +43,12 @@ public class RenaultKB implements KB {
                                     "111.pm", "112.pm", "113.pm");
 
     public RenaultKB(){
-        defineVariableValues();
+        defineDomains();
         defineVariables();
         defineConstraints();
     }
 
-    public void defineVariableValues() {
+    public void defineDomains() {
         int i=0;
         // 1
         // Var1 : B64, D64, E64, F64, J64, K25, L64, S64, V25

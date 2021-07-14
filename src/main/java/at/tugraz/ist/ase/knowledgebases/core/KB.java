@@ -22,6 +22,7 @@ public interface KB {
     IntVar[] getVars();
     void setVars(IntVar[] v);
 
+    void defineDomains();
     void defineVariables();
     void defineConstraints();
 

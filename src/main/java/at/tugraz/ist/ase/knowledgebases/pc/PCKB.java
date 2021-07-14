@@ -29,12 +29,12 @@ public class PCKB implements KB {
     int[] domainSizes = new int[45];
 
     public PCKB(){
-        defineVariableValues();
+        defineDomains();
         defineVariables();
         defineConstraints();
     }
 
-    public void defineVariableValues() {
+    public void defineDomains() {
         int i=0;
         domains[i]=new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         domainSizes[i++] = 11;

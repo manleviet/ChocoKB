@@ -3,8 +3,7 @@
  *
  * Copyright (c) 2021.
  *
- * Author: Le Viet Man
- * Email: manleviet@gmail.com
+ * @author: Viet-Man Le (vietman.le@ist.tugraz.at)
  */
 
 package at.tugraz.ist.ase.knowledgebases.pc;

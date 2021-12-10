@@ -101,14 +101,14 @@ public class Domain implements Cloneable {
         if (contains(chocoValue)) {
             return values.get(chocoValues.indexOf(chocoValue));
         }
-        return null;
+        throw new IllegalArgumentException("Domain " + name + " has not the value " + chocoValue);
     }
 
     public int getChocoValue(@NonNull String value) {
         if (contains(value)) {
             return chocoValues.get(values.indexOf(value));
         }
-        return -1;
+        throw new IllegalArgumentException("Domain " + name + " has not the value " + value);
     }
 
     public int[] getIntValues() {

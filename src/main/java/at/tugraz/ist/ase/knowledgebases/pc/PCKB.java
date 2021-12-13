@@ -27,30 +27,30 @@ import static com.google.common.base.Preconditions.checkArgument;
 @Slf4j
 public class PCKB extends KB {
 
-    public PCKB() {
-        super("PCConfigurationProblem", "https://www.itu.dk/research/cla/externals/clib/");
+    public PCKB(boolean hasNegativeConstraints) {
+        super("PCConfigurationProblem", "https://www.itu.dk/research/cla/externals/clib/", hasNegativeConstraints);
 
         log.debug("{}Creating PCKB >>>", LoggerUtils.tab);
         LoggerUtils.indent();
 
-        reset();
+        reset(hasNegativeConstraints);
 
         LoggerUtils.outdent();
         log.debug("{}<<< PCKB created", LoggerUtils.tab);
     }
 
     @Override
-    public void reset() {
+    public void reset(boolean hasNegativeConstraints) {
         modelKB = new Model(name);
         variableList = new LinkedList<>();
         domainList = new LinkedList<>();
         constraintList = new LinkedList<>();
         defineDomains();
         defineVariables();
-        defineConstraints();
+        defineConstraints(hasNegativeConstraints);
     }
 
-    private void defineDomains() {
+    public void defineDomains() {
         log.trace("{}Defining domains...", LoggerUtils.tab);
 
         domainList.add(Domain.builder()
@@ -292,7 +292,7 @@ public class PCKB extends KB {
         }
     }
 
-    public void defineConstraints() {
+    public void defineConstraints(boolean hasNegativeConstraints) {
         log.trace("{}Defining constraints...", LoggerUtils.tab);
 
         int startIdx = 0;
@@ -306,7 +306,7 @@ public class PCKB extends KB {
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(12)).getChocoVar(),"=", 400));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(13)).getChocoVar(),"=", 1600));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", 2));
-        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 512));
+        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 4096));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(3)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(4)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(5)).getChocoVar(),"=", 1));
@@ -323,7 +323,7 @@ public class PCKB extends KB {
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(12)).getChocoVar(),"=", 400));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(13)).getChocoVar(),"=", 1600));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", 2));
-        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 512));
+        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 4096));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(3)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(4)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(5)).getChocoVar(),"=", 1));
@@ -340,7 +340,7 @@ public class PCKB extends KB {
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(12)).getChocoVar(),"=", 200));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(13)).getChocoVar(),"=", 1000));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", 2));
-        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 256));
+        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 2048));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(3)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(4)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(5)).getChocoVar(),"=", 1));
@@ -357,7 +357,7 @@ public class PCKB extends KB {
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(12)).getChocoVar(),"=", 200));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(13)).getChocoVar(),"=", 1000));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", 0));
-        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 256));
+        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 2048));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(3)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(4)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(5)).getChocoVar(),"=", 1));
@@ -374,7 +374,7 @@ public class PCKB extends KB {
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(12)).getChocoVar(),"=", 200));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(13)).getChocoVar(),"=", 800));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", 2));
-        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 256));
+        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 2048));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(3)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(4)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(5)).getChocoVar(),"=", 1));
@@ -391,7 +391,7 @@ public class PCKB extends KB {
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(12)).getChocoVar(),"=", 200));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(13)).getChocoVar(),"=", 800));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", 0));
-        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 256));
+        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 2048));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(3)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(4)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(5)).getChocoVar(),"=", 1));
@@ -408,7 +408,7 @@ public class PCKB extends KB {
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(12)).getChocoVar(),"=", 400));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(13)).getChocoVar(),"=", 2000));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", 2));
-        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 256));
+        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 2048));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(3)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(4)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(5)).getChocoVar(),"=", 1));
@@ -425,7 +425,7 @@ public class PCKB extends KB {
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(12)).getChocoVar(),"=", 400));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(13)).getChocoVar(),"=", 1000));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", 2));
-        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 512));
+        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 4096));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(3)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(4)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(5)).getChocoVar(),"=", 2));
@@ -442,7 +442,7 @@ public class PCKB extends KB {
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(12)).getChocoVar(),"=", 400));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(13)).getChocoVar(),"=", 1600));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", 2));
-        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 256));
+        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 2048));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(3)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(4)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(5)).getChocoVar(),"=", 1));
@@ -459,7 +459,7 @@ public class PCKB extends KB {
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(12)).getChocoVar(),"=", 400));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(13)).getChocoVar(),"=", 1400));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", 2));
-        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 256));
+        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 2048));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(3)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(4)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(5)).getChocoVar(),"=", 1));
@@ -476,7 +476,7 @@ public class PCKB extends KB {
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(12)).getChocoVar(),"=", 1800));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(13)).getChocoVar(),"=", 2200));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", 2));
-        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 256));
+        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 2048));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(3)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(4)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(5)).getChocoVar(),"=", 1));
@@ -493,7 +493,7 @@ public class PCKB extends KB {
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(12)).getChocoVar(),"=", 1800));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(13)).getChocoVar(),"=", 2200));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", 2));
-        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 256));
+        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 2048));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(3)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(4)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(5)).getChocoVar(),"=", 1));
@@ -510,7 +510,7 @@ public class PCKB extends KB {
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(12)).getChocoVar(),"=", 1800));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(13)).getChocoVar(),"=", 2400));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", 2));
-        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 256));
+        kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(),"=", 2048));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(3)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(4)).getChocoVar(),"=", 1));
         kbReqList.add(this.modelKB.arithm(((IntVariable)variableList.get(5)).getChocoVar(),"=", 1));
@@ -528,19 +528,29 @@ public class PCKB extends KB {
                     kbReqList.get(13 + counter), kbReqList.get(14 + counter), kbReqList.get(15 + counter)));
         }
 
-        org.chocosolver.solver.constraints.Constraint result = this.modelKB.or(configurationList.get(0), configurationList.get(1), configurationList.get(2), configurationList.get(3), configurationList.get(4),
+        org.chocosolver.solver.constraints.Constraint chocoConstraint = this.modelKB.or(configurationList.get(0), configurationList.get(1), configurationList.get(2), configurationList.get(3), configurationList.get(4),
                 configurationList.get(5), configurationList.get(6), configurationList.get(7), configurationList.get(8), configurationList.get(9), configurationList.get(10),
                 configurationList.get(11), configurationList.get(12));
 
-        this.modelKB.post(result);
+        this.modelKB.post(chocoConstraint);
+
+        org.chocosolver.solver.constraints.Constraint negChocoConstraint = null;
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
 
         Constraint constraint = new Constraint("constraint 1");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 2
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(
+        chocoConstraint =  this.modelKB.or(
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(16)).getChocoVar(),"=", 6), this.modelKB.arithm(((IntVariable)variableList.get(17)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(18)).getChocoVar(),"=", 600)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(16)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(17)).getChocoVar(),"=", 3), this.modelKB.arithm(((IntVariable)variableList.get(18)).getChocoVar(),"=", 2400)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(16)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(17)).getChocoVar(),"=", 3), this.modelKB.arithm(((IntVariable)variableList.get(18)).getChocoVar(),"=", 1800)),
@@ -548,15 +558,26 @@ public class PCKB extends KB {
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(16)).getChocoVar(),"=", 3), this.modelKB.arithm(((IntVariable)variableList.get(17)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(18)).getChocoVar(),"=", 1200)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(16)).getChocoVar(),"=", 4), this.modelKB.arithm(((IntVariable)variableList.get(17)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(18)).getChocoVar(),"=", 1000)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(16)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(17)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(18)).getChocoVar(),"=", 2000)),
-                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(16)).getChocoVar(),"=", 5), this.modelKB.arithm(((IntVariable)variableList.get(17)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(18)).getChocoVar(),"=", 800))
-        ));
+                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(16)).getChocoVar(),"=", 5), this.modelKB.arithm(((IntVariable)variableList.get(17)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(18)).getChocoVar(),"=", 800)));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 2");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 3
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(
+        chocoConstraint = this.modelKB.or(
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(19)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(20)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(21)).getChocoVar(),"=", 512)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(19)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(20)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(21)).getChocoVar(),"=", 512)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(19)).getChocoVar(),"=", 5), this.modelKB.arithm(((IntVariable)variableList.get(20)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(21)).getChocoVar(),"=", 2048)),
@@ -564,15 +585,26 @@ public class PCKB extends KB {
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(19)).getChocoVar(),"=", 3), this.modelKB.arithm(((IntVariable)variableList.get(20)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(21)).getChocoVar(),"=", 8192)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(19)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(20)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(21)).getChocoVar(),"=", 32768)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(19)).getChocoVar(),"=", 6), this.modelKB.arithm(((IntVariable)variableList.get(20)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(21)).getChocoVar(),"=", 1024)),
-                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(19)).getChocoVar(),"=", 4), this.modelKB.arithm(((IntVariable)variableList.get(20)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(21)).getChocoVar(),"=", 4096))
-        ));
+                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(19)).getChocoVar(),"=", 4), this.modelKB.arithm(((IntVariable)variableList.get(20)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(21)).getChocoVar(),"=", 4096)));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 3");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 4
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(
+        chocoConstraint = this.modelKB.or(
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(22)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(23)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(24)).getChocoVar(),"=", 512)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(22)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(23)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(24)).getChocoVar(),"=", 512)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(22)).getChocoVar(),"=", 5), this.modelKB.arithm(((IntVariable)variableList.get(23)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(24)).getChocoVar(),"=", 2048)),
@@ -580,15 +612,26 @@ public class PCKB extends KB {
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(22)).getChocoVar(),"=", 3), this.modelKB.arithm(((IntVariable)variableList.get(23)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(24)).getChocoVar(),"=", 8192)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(22)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(23)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(24)).getChocoVar(),"=", 32768)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(22)).getChocoVar(),"=", 6), this.modelKB.arithm(((IntVariable)variableList.get(23)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(24)).getChocoVar(),"=", 1024)),
-                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(22)).getChocoVar(),"=", 4), this.modelKB.arithm(((IntVariable)variableList.get(23)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(24)).getChocoVar(),"=", 4096))
-        ));
+                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(22)).getChocoVar(),"=", 4), this.modelKB.arithm(((IntVariable)variableList.get(23)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(24)).getChocoVar(),"=", 4096)));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 4");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 5
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(
+        chocoConstraint = this.modelKB.or(
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(26)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(27)).getChocoVar(),"=", 0)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(26)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(27)).getChocoVar(),"=", 0)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),"=", 6), this.modelKB.arithm(((IntVariable)variableList.get(26)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(27)).getChocoVar(),"=", 1)),
@@ -596,15 +639,26 @@ public class PCKB extends KB {
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),"=", 5), this.modelKB.arithm(((IntVariable)variableList.get(26)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(27)).getChocoVar(),"=", 1)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),"=", 4), this.modelKB.arithm(((IntVariable)variableList.get(26)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(27)).getChocoVar(),"=", 2)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),"=", 3), this.modelKB.arithm(((IntVariable)variableList.get(26)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(27)).getChocoVar(),"=", 2)),
-                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(26)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(27)).getChocoVar(),"=", 8))
-        ));
+                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(26)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(27)).getChocoVar(),"=", 8)));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 5");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 6
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(
+        chocoConstraint = this.modelKB.or(
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(29)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(30)).getChocoVar(),"=", 0)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(29)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(30)).getChocoVar(),"=", 0)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),"=", 6), this.modelKB.arithm(((IntVariable)variableList.get(29)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(30)).getChocoVar(),"=", 1)),
@@ -612,15 +666,26 @@ public class PCKB extends KB {
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),"=", 5), this.modelKB.arithm(((IntVariable)variableList.get(29)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(30)).getChocoVar(),"=", 1)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),"=", 4), this.modelKB.arithm(((IntVariable)variableList.get(29)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(30)).getChocoVar(),"=", 2)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),"=", 3), this.modelKB.arithm(((IntVariable)variableList.get(29)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(30)).getChocoVar(),"=", 2)),
-                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(29)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(30)).getChocoVar(),"=", 8))
-        ));
+                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(29)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(30)).getChocoVar(),"=", 8)));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 6");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 7
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(
+        chocoConstraint = this.modelKB.or(
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(32)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(33)).getChocoVar(),"=", 0)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(32)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(33)).getChocoVar(),"=", 0)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),"=", 6), this.modelKB.arithm(((IntVariable)variableList.get(32)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(33)).getChocoVar(),"=", 1)),
@@ -628,15 +693,26 @@ public class PCKB extends KB {
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),"=", 5), this.modelKB.arithm(((IntVariable)variableList.get(32)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(33)).getChocoVar(),"=", 1)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),"=", 4), this.modelKB.arithm(((IntVariable)variableList.get(32)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(33)).getChocoVar(),"=", 2)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),"=", 3), this.modelKB.arithm(((IntVariable)variableList.get(32)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(33)).getChocoVar(),"=", 2)),
-                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(32)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(33)).getChocoVar(),"=", 8))
-        ));
+                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(32)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(33)).getChocoVar(),"=", 8)));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 7");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 8
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(
+        chocoConstraint = this.modelKB.or(
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(35)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(36)).getChocoVar(),"=", 0)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(35)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(36)).getChocoVar(),"=", 0)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),"=", 6), this.modelKB.arithm(((IntVariable)variableList.get(35)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(36)).getChocoVar(),"=", 1)),
@@ -644,218 +720,552 @@ public class PCKB extends KB {
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),"=", 5), this.modelKB.arithm(((IntVariable)variableList.get(35)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(36)).getChocoVar(),"=", 1)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),"=", 4), this.modelKB.arithm(((IntVariable)variableList.get(35)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(36)).getChocoVar(),"=", 2)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),"=", 3), this.modelKB.arithm(((IntVariable)variableList.get(35)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(36)).getChocoVar(),"=", 2)),
-                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(35)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(36)).getChocoVar(),"=", 8))
-        ));
+                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(35)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(36)).getChocoVar(),"=", 8)));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 8");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 9
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(
+        chocoConstraint = this.modelKB.or(
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(37)).getChocoVar(),"=", 0), this.modelKB.arithm(((IntVariable)variableList.get(38)).getChocoVar(),"=", 3)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(37)).getChocoVar(),"=", 3), this.modelKB.arithm(((IntVariable)variableList.get(38)).getChocoVar(),"=", 3)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(37)).getChocoVar(),"=", 6), this.modelKB.arithm(((IntVariable)variableList.get(38)).getChocoVar(),"=", 1)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(37)).getChocoVar(),"=", 2), this.modelKB.arithm(((IntVariable)variableList.get(38)).getChocoVar(),"=", 3)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(37)).getChocoVar(),"=", 5), this.modelKB.arithm(((IntVariable)variableList.get(38)).getChocoVar(),"=", 1)),
                 this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(37)).getChocoVar(),"=", 4), this.modelKB.arithm(((IntVariable)variableList.get(38)).getChocoVar(),"=", 3)),
-                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(37)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(38)).getChocoVar(),"=", 3))
-        ));
+                this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(37)).getChocoVar(),"=", 1), this.modelKB.arithm(((IntVariable)variableList.get(38)).getChocoVar(),"=", 3)));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 9");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 10
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(1)).getChocoVar(),"=", ((IntVariable)variableList.get(17)).getChocoVar()), this.modelKB.arithm(((IntVariable)variableList.get(18)).getChocoVar(),">=", ((IntVariable)variableList.get(12)).getChocoVar()), this.modelKB.arithm(((IntVariable)variableList.get(18)).getChocoVar(),"<=", ((IntVariable)variableList.get(13)).getChocoVar())));
+        chocoConstraint = this.modelKB.and(this.modelKB.arithm(((IntVariable)variableList.get(1)).getChocoVar(),"=", ((IntVariable)variableList.get(17)).getChocoVar()), this.modelKB.arithm(((IntVariable)variableList.get(18)).getChocoVar(),">=", ((IntVariable)variableList.get(12)).getChocoVar()), this.modelKB.arithm(((IntVariable)variableList.get(18)).getChocoVar(),"<=", ((IntVariable)variableList.get(13)).getChocoVar()));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 10");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 11
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.arithm(((IntVariable)variableList.get(2)).getChocoVar(),"=", ((IntVariable)variableList.get(20)).getChocoVar()));
+        chocoConstraint = this.modelKB.arithm(((IntVariable)variableList.get(2)).getChocoVar(),"=", ((IntVariable)variableList.get(20)).getChocoVar());
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 11");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 12
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.arithm(((IntVariable)variableList.get(2)).getChocoVar(),"=", ((IntVariable)variableList.get(23)).getChocoVar()));
+        chocoConstraint = this.modelKB.arithm(((IntVariable)variableList.get(2)).getChocoVar(),"=", ((IntVariable)variableList.get(23)).getChocoVar());
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 12");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 13
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", ((IntVariable)variableList.get(26)).getChocoVar()));
+        chocoConstraint = this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", ((IntVariable)variableList.get(26)).getChocoVar());
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 13");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 14
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", ((IntVariable)variableList.get(29)).getChocoVar()));
+        chocoConstraint = this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", ((IntVariable)variableList.get(29)).getChocoVar());
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 14");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 15
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", ((IntVariable)variableList.get(32)).getChocoVar()));
+        chocoConstraint = this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", ((IntVariable)variableList.get(32)).getChocoVar());
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 15");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 16
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", ((IntVariable)variableList.get(35)).getChocoVar()));
+        chocoConstraint = this.modelKB.arithm(((IntVariable)variableList.get(14)).getChocoVar(),"=", ((IntVariable)variableList.get(35)).getChocoVar());
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 16");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 17
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(41)).getChocoVar(),"=", 512), this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),">", 0)));
+        chocoConstraint = this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(41)).getChocoVar(),"=", 512), this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),">", 0));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 17");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 18
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(41)).getChocoVar(),"=", 1024), this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),"<", 1)));
+        chocoConstraint = this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(41)).getChocoVar(),"=", 1024), this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),"<", 1));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 18");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 19
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(42)).getChocoVar(),"=", 512), this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),">", 0)));
+        chocoConstraint = this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(42)).getChocoVar(),"=", 512), this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),">", 0));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 19");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 20
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(42)).getChocoVar(),"=", 1024), this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),"<", 1)));
+        chocoConstraint = this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(42)).getChocoVar(),"=", 1024), this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),"<", 1));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 20");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 21
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(43)).getChocoVar(),"=", 512), this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),">", 0)));
+        chocoConstraint = this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(43)).getChocoVar(),"=", 512), this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),">", 0));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 21");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 22
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(43)).getChocoVar(),"=", 1024), this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),"<", 1)));
+        chocoConstraint = this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(43)).getChocoVar(),"=", 1024), this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),"<", 1));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 22");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 23
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(44)).getChocoVar(),"=", 512), this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),">", 0)));
+        chocoConstraint = this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(44)).getChocoVar(),"=", 512), this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),">", 0));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 23");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 24
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(44)).getChocoVar(),"=", 1024), this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),"<", 1)));
+        chocoConstraint = this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(44)).getChocoVar(),"=", 1024), this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),"<", 1));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 24");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 25
         startIdx = modelKB.getNbCstrs();
         IntVar [] varsToBeAdded = new IntVar[4];
-        IntVar sum = this.modelKB.intVar("sum", 0, 4096);
+        IntVar sum = this.modelKB.intVar("sum", 0, 4097);
         varsToBeAdded[0] = ((IntVariable)variableList.get(41)).getChocoVar();
         varsToBeAdded[1] = ((IntVariable)variableList.get(42)).getChocoVar();
         varsToBeAdded[2] = ((IntVariable)variableList.get(43)).getChocoVar();
         varsToBeAdded[3] = ((IntVariable)variableList.get(44)).getChocoVar();
-        this.modelKB.sum(varsToBeAdded ,"=", sum);
-        this.modelKB.post(this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(), ">=", sum));
+        this.modelKB.sum(varsToBeAdded ,"=", sum).post();
+        chocoConstraint = this.modelKB.arithm(((IntVariable)variableList.get(15)).getChocoVar(), ">=", sum);
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 25");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 26
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(this.modelKB.not(this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),">", 0)), this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),">", 0)));
+        chocoConstraint = this.modelKB.or(this.modelKB.not(this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),">", 0)), this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),">", 0));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 26");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 27
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(this.modelKB.not(this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),">", 0)), this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),">", 0)));
+        chocoConstraint = this.modelKB.or(this.modelKB.not(this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),">", 0)), this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),">", 0));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 27");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 28
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(this.modelKB.not(this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),">", 0)), this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),">", 0)));
+        chocoConstraint = this.modelKB.or(this.modelKB.not(this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),">", 0)), this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),">", 0));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 28");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 29
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(this.modelKB.not(this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),">", 0)), this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),">", 0)));
+        chocoConstraint = this.modelKB.or(this.modelKB.not(this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),">", 0)), this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(),">", 0));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 29");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 30
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(this.modelKB.not(this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),">", 0)), this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),">", 0)));
+        chocoConstraint = this.modelKB.or(this.modelKB.not(this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),">", 0)), this.modelKB.arithm(((IntVariable)variableList.get(28)).getChocoVar(),">", 0));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 30");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 31
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(this.modelKB.not(this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),">", 0)), this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),">", 0)));
+        chocoConstraint = this.modelKB.or(this.modelKB.not(this.modelKB.arithm(((IntVariable)variableList.get(34)).getChocoVar(),">", 0)), this.modelKB.arithm(((IntVariable)variableList.get(31)).getChocoVar(),">", 0));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 31");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 32
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(3)).getChocoVar(),"=", ((IntVariable)variableList.get(38)).getChocoVar()), this.modelKB.arithm(((IntVariable)variableList.get(4)).getChocoVar(),"=", ((IntVariable)variableList.get(38)).getChocoVar()),
+        chocoConstraint = this.modelKB.or(this.modelKB.arithm(((IntVariable)variableList.get(3)).getChocoVar(),"=", ((IntVariable)variableList.get(38)).getChocoVar()), this.modelKB.arithm(((IntVariable)variableList.get(4)).getChocoVar(),"=", ((IntVariable)variableList.get(38)).getChocoVar()),
                 this.modelKB.arithm(((IntVariable)variableList.get(5)).getChocoVar(),"=", ((IntVariable)variableList.get(38)).getChocoVar()), this.modelKB.arithm(((IntVariable)variableList.get(6)).getChocoVar(),"=", ((IntVariable)variableList.get(38)).getChocoVar()),
                 this.modelKB.arithm(((IntVariable)variableList.get(7)).getChocoVar(),"=", ((IntVariable)variableList.get(38)).getChocoVar()), this.modelKB.arithm(((IntVariable)variableList.get(8)).getChocoVar(),"=", ((IntVariable)variableList.get(38)).getChocoVar()),
-                this.modelKB.arithm(((IntVariable)variableList.get(9)).getChocoVar(),"=", ((IntVariable)variableList.get(38)).getChocoVar()), this.modelKB.arithm(((IntVariable)variableList.get(10)).getChocoVar(),"=", ((IntVariable)variableList.get(38)).getChocoVar())));
+                this.modelKB.arithm(((IntVariable)variableList.get(9)).getChocoVar(),"=", ((IntVariable)variableList.get(38)).getChocoVar()), this.modelKB.arithm(((IntVariable)variableList.get(10)).getChocoVar(),"=", ((IntVariable)variableList.get(38)).getChocoVar()));
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 32");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 33
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.arithm(((IntVariable)variableList.get(19)).getChocoVar(), ">", 0));
+        chocoConstraint = this.modelKB.arithm(((IntVariable)variableList.get(19)).getChocoVar(), ">", 0);
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 33");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 34
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(), ">", 0));
+        chocoConstraint = this.modelKB.arithm(((IntVariable)variableList.get(25)).getChocoVar(), ">", 0);
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 34");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 35
         startIdx = modelKB.getNbCstrs();
-        this.modelKB.post(this.modelKB.arithm(((IntVariable)variableList.get(39)).getChocoVar(), ">", ((IntVariable)variableList.get(18)).getChocoVar()));
+        chocoConstraint = this.modelKB.arithm(((IntVariable)variableList.get(39)).getChocoVar(), ">", ((IntVariable)variableList.get(18)).getChocoVar());
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 35");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
+
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
 
         // Constraint 36
         startIdx = modelKB.getNbCstrs();
@@ -865,21 +1275,40 @@ public class PCKB extends KB {
         varsToBeAdded2[1] = ((IntVariable)variableList.get(30)).getChocoVar();
         varsToBeAdded2[2] = ((IntVariable)variableList.get(33)).getChocoVar();
         varsToBeAdded2[3] = ((IntVariable)variableList.get(36)).getChocoVar();
-        this.modelKB.sum(varsToBeAdded2 ,"=",sum2);
-        this.modelKB.post(this.modelKB.arithm(((IntVariable)variableList.get(40)).getChocoVar(), ">=", sum2));
+        this.modelKB.sum(varsToBeAdded2 ,"=",sum2).post();
+        chocoConstraint = this.modelKB.arithm(((IntVariable)variableList.get(40)).getChocoVar(), "=", sum2);
+
+        this.modelKB.post(chocoConstraint);
+
+        if (hasNegativeConstraints) {
+            negChocoConstraint = chocoConstraint.getOpposite();
+            this.modelKB.post(negChocoConstraint);
+        }
+
         constraint = new Constraint("constraint 36");
-        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
+        addChocoConstraintsToConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1, hasNegativeConstraints);
         constraintList.add(constraint);
 
+        if (hasNegativeConstraints && negChocoConstraint != null) {
+            modelKB.unpost(negChocoConstraint);
+        }
     }
 
-    private void addChocoConstraintsToConstraint(Constraint constraint, int startIdx, int endIdx) {
+    private void addChocoConstraintsToConstraint(Constraint constraint, int startIdx, int endIdx, boolean hasNegativeConstraints) {
         org.chocosolver.solver.constraints.Constraint[] constraints = modelKB.getCstrs();
 
         int index = startIdx;
-        while (index <= endIdx) {
-            constraint.addChocoConstraint(constraints[index].toString());
+        while (index <= endIdx - 2) {
+            constraint.addChocoConstraint(constraints[index]);
+            if (hasNegativeConstraints) {
+                constraint.addNegChocoConstraint(constraints[index]);
+            }
             index++;
+        }
+
+        constraint.addChocoConstraint(constraints[index]);
+        if (hasNegativeConstraints) {
+            constraint.addNegChocoConstraint(constraints[index + 1]);
         }
     }
 

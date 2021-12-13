@@ -27,6 +27,9 @@ public abstract class KB {
     protected final String source;
 
     @ToString.Exclude
+    protected final boolean hasNegativeConstraints;
+
+    @ToString.Exclude
     protected Model modelKB;
 
     // Variables
@@ -41,15 +44,17 @@ public abstract class KB {
     @ToString.Exclude
     protected List<Constraint> constraintList;
 
-    protected KB(String name, String source) {
+    protected KB(String name, String source, boolean hasNegativeConstraints) {
         this.name = name;
         this.source = source;
+        this.hasNegativeConstraints = hasNegativeConstraints;
     }
 
-    public abstract void reset();
+    public abstract void reset(boolean hasNegativeConstraints);
 
+    public abstract void defineDomains();
     public abstract void defineVariables();
-    public abstract void defineConstraints();
+    public abstract void defineConstraints(boolean hasNegativeConstraints);
 
     // Domains
     public int getNumDomains() {

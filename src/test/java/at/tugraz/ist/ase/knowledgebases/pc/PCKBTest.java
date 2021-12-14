@@ -1600,14 +1600,15 @@ class PCKBTest {
     @Test
     void testContains() {
         for (org.chocosolver.solver.constraints.Constraint cstr : kb.getModelKB().getCstrs()) {
-            AtomicBoolean found = new AtomicBoolean(false);
-            kb.getConstraintList().forEach(constraint -> {
+            boolean found = false;
+            for (at.tugraz.ist.ase.knowledgebases.core.Constraint constraint : kb.getConstraintList()) {
                 if (constraint.contains(cstr)) {
-                    found.set(true);
+                    found = true;
+                    break;
                 }
-            });
+            }
 
-            assertTrue(found.get(), "Constraint " + cstr + " not found in any constraint");
+            assertTrue(found, "Constraint " + cstr + " not found in any constraint");
         }
     }
 }

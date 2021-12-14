@@ -10,6 +10,7 @@ package at.tugraz.ist.ase.knowledgebases.core;
 
 import lombok.Getter;
 import lombok.NonNull;
+import org.chocosolver.solver.Model;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +26,24 @@ public class Constraint {
         this.constraint = constraint;
         chocoConstraints = new LinkedList<>();
         negChocoConstraints = new LinkedList<>();
+    }
+
+    public void addChocoConstraints(Model model, int startIdx, int endIdx, boolean hasNegativeConstraints) {
+        org.chocosolver.solver.constraints.Constraint[] constraints = model.getCstrs();
+
+        int index = startIdx;
+        while (index <= endIdx - 2) {
+            addChocoConstraint(constraints[index]);
+            if (hasNegativeConstraints) {
+                addNegChocoConstraint(constraints[index]);
+            }
+            index++;
+        }
+
+        addChocoConstraint(constraints[index]);
+        if (hasNegativeConstraints) {
+            addNegChocoConstraint(constraints[index + 1]);
+        }
     }
 
     public void addChocoConstraint(@NonNull org.chocosolver.solver.constraints.Constraint constraint) {

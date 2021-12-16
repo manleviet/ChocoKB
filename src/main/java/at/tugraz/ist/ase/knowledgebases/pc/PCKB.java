@@ -50,7 +50,7 @@ public class PCKB extends KB {
         log.debug("{}<<< PCKB created", LoggerUtils.tab);
     }
 
-    public void defineDomains() {
+    private void defineDomains() {
         log.trace("{}Defining domains...", LoggerUtils.tab);
 
         domainList.add(Domain.builder()
@@ -522,7 +522,7 @@ public class PCKB extends KB {
 
         List<org.chocosolver.solver.constraints.Constraint> configurationList = new ArrayList<>();
         for(int counter = 0; counter <= kbReqList.size() - 16; counter = counter + 16) {
-            configurationList.add(this.modelKB.and(kbReqList.get(0 + counter), kbReqList.get(1 + counter), kbReqList.get(2 + counter),
+            configurationList.add(this.modelKB.and(kbReqList.get(counter), kbReqList.get(1 + counter), kbReqList.get(2 + counter),
                     kbReqList.get(3 + counter), kbReqList.get(4 + counter), kbReqList.get(5 + counter), kbReqList.get(6 + counter), kbReqList.get(7 + counter),
                     kbReqList.get(8 + counter), kbReqList.get(9 + counter), kbReqList.get(10 + counter), kbReqList.get(11 + counter), kbReqList.get(12 + counter),
                     kbReqList.get(13 + counter), kbReqList.get(14 + counter), kbReqList.get(15 + counter)));

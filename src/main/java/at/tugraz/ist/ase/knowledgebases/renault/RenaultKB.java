@@ -66,7 +66,7 @@ public class RenaultKB extends KB {
             "101.pm", "102.pm", "103.pm", "104.pm", "105.pm", "106.pm", "107.pm", "108.pm", "109.pm", "110.pm",
             "111.pm", "112.pm", "113.pm");
 
-    public void defineDomains() {
+    private void defineDomains() {
         log.trace("{}Defining domains...", LoggerUtils.tab);
 
         // 1

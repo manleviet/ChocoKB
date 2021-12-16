@@ -52,7 +52,6 @@ public abstract class KB {
 
     public abstract void reset(boolean hasNegativeConstraints);
 
-    public abstract void defineDomains();
     public abstract void defineVariables();
     public abstract void defineConstraints(boolean hasNegativeConstraints);
 

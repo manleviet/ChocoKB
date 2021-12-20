@@ -32,9 +32,10 @@ public final class ConstraintUtils {
             sb.append(mess).append(" ").append(count).append(":\n");
 //            System.out.println(mess + " " + count + ":");
 //            sb.append(String.join("\n", diag));
-            sb.append(convertToString(diag));
+            sb.append(convertToString(diag)).append("\n");
 //            diag.forEach(System.out::println);
         }
+        sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
     }
 }

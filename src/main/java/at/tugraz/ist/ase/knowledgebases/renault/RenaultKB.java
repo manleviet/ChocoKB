@@ -50,7 +50,7 @@ public class RenaultKB extends KB {
         defineConstraints(hasNegativeConstraints);
 
         LoggerUtils.outdent();
-        log.debug("{}<<< RenaultKB created", LoggerUtils.tab);
+        log.debug("{}<<< Created RenaultKB", LoggerUtils.tab);
     }
 
     List<String> ruleFiles = List.of("001.pm", "002.pm", "003.pm", "004.pm", "005.pm", "006.pm", "007.pm", "008.pm", "009.pm", "010.pm",
@@ -67,7 +67,8 @@ public class RenaultKB extends KB {
             "111.pm", "112.pm", "113.pm");
 
     private void defineDomains() {
-        log.trace("{}Defining domains...", LoggerUtils.tab);
+        log.trace("{}Creating domains >>>", LoggerUtils.tab);
+        LoggerUtils.indent();
 
         // 1
         // Var1 : B64, D64, E64, F64, J64, K25, L64, S64, V25
@@ -663,10 +664,14 @@ public class RenaultKB extends KB {
                 .name("Var101")
                 .values(List.of("D7F", "E7J", "F3R", "F4R", "F7R", "F8Q", "F9Q", "K4J", "K4M", "K7M"))
                 .build());
+
+        LoggerUtils.outdent();
+        log.debug("{}<<< Created domains", LoggerUtils.tab);
     }
 
     public void defineVariables (){
-        log.trace("{}Defining variables...", LoggerUtils.tab);
+        log.trace("{}Creating variables >>>", LoggerUtils.tab);
+        LoggerUtils.indent();
 
         List<String> varNames = List.of("Var1", "Var2", "Var3", "Var4", "Var5", "Var6", "Var7", "Var8", "Var9", "Var10",
                 "Var11", "Var12", "Var13", "Var14", "Var15", "Var16", "Var17", "Var18", "Var19", "Var20",
@@ -688,10 +693,13 @@ public class RenaultKB extends KB {
                     .chocoVar(intVar).build();
             variableList.add(var);
         }
+
+        LoggerUtils.outdent();
+        log.debug("{}<<< Created variables", LoggerUtils.tab);
     }
 
     public void defineConstraints(boolean hasNegativeConstraints) {
-        log.trace("{}Defining constraints...", LoggerUtils.tab);
+        log.trace("{}Creating constraints >>>", LoggerUtils.tab);
         LoggerUtils.indent();
 
         ClassLoader classLoader = getClass().getClassLoader();
@@ -730,6 +738,7 @@ public class RenaultKB extends KB {
         }
 
         LoggerUtils.outdent();
+        log.debug("{}<<< Created constraints", LoggerUtils.tab);
     }
 
     @SneakyThrows

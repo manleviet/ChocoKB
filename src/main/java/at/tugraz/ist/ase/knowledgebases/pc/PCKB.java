@@ -47,11 +47,12 @@ public class PCKB extends KB {
         defineConstraints(hasNegativeConstraints);
 
         LoggerUtils.outdent();
-        log.debug("{}<<< PCKB created", LoggerUtils.tab);
+        log.debug("{}<<< Created PCKB", LoggerUtils.tab);
     }
 
     private void defineDomains() {
-        log.trace("{}Defining domains...", LoggerUtils.tab);
+        log.trace("{}Defining domains >>>", LoggerUtils.tab);
+        LoggerUtils.indent();
 
         domainList.add(Domain.builder()
                 .name("mb_idD")
@@ -269,10 +270,14 @@ public class PCKB extends KB {
                 .values(List.of("512", "1024"))
                 .chocoValues(List.of(512, 1024))
                 .build());
+
+        LoggerUtils.outdent();
+        log.debug("{}<<< Created domains", LoggerUtils.tab);
     }
 
     public void defineVariables (){
-        log.trace("{}Defining variables...", LoggerUtils.tab);
+        log.trace("{}Defining variables >>", LoggerUtils.tab);
+        LoggerUtils.indent();
 
         List<String> varNames = List.of("mb_idD", "mb_cpuslotD", "mb_controllertypeD", "mb_SOME_slotD0", "mb_SOME_slotD1",
                 "mb_SOME_slotD2", "mb_SOME_slotD3", "mb_SOME_slotD4", "mb_SOME_slotD5", "mb_SOME_slotD6", "mb_SOME_slotD7", "mb_controllercountD",
@@ -290,10 +295,14 @@ public class PCKB extends KB {
                     .chocoVar(intVar).build();
             variableList.add(var);
         }
+
+        LoggerUtils.outdent();
+        log.debug("{}<<< Created variables", LoggerUtils.tab);
     }
 
     public void defineConstraints(boolean hasNegativeConstraints) {
-        log.trace("{}Defining constraints...", LoggerUtils.tab);
+        log.trace("{}Defining constraints >>>", LoggerUtils.tab);
+        LoggerUtils.indent();
 
         int startIdx = 0;
 
@@ -823,6 +832,9 @@ public class PCKB extends KB {
         chocoConstraint = this.modelKB.arithm(((IntVariable)variableList.get(40)).getChocoVar(), "=", sum2);
 
         addConstraint("constraint 36", chocoConstraint, startIdx, hasNegativeConstraints);
+
+        LoggerUtils.outdent();
+        log.debug("{}<<< Created constraints", LoggerUtils.tab);
     }
 
     private void addConstraint(String constraintName, org.chocosolver.solver.constraints.Constraint chocoConstraint, int startIdx, boolean hasNegativeConstraints) {

@@ -8,7 +8,9 @@
 
 package at.tugraz.ist.ase.knowledgebases.core;
 
+import at.tugraz.ist.ase.common.LoggerUtils;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @Getter
 @EqualsAndHashCode
+@Slf4j
 public class Domain implements Cloneable {
     private final String name;
     private final DomainType type;
@@ -80,6 +83,8 @@ public class Domain implements Cloneable {
             this.values = List.of("false", "true");
             this.chocoValues = List.of(0, 1);
         }
+
+        log.trace("{}Created Domain [domain={}]", LoggerUtils.tab, this);
     }
 
     private void initChocoValuesWithDefaultValues() {
@@ -87,6 +92,8 @@ public class Domain implements Cloneable {
         for (int i = 0; i < this.values.size(); i++) {
             this.chocoValues.add(i);
         }
+
+        log.trace("{}Initialized Choco values for Domain [domain={}]", LoggerUtils.tab, this);
     }
 
     public int size() {

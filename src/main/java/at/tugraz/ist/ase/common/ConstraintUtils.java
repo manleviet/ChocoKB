@@ -38,4 +38,12 @@ public final class ConstraintUtils {
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
     }
+
+    public boolean isMinimal(Set<Constraint> diag, List<Set<Constraint>> allDiag) {
+        return allDiag.stream().noneMatch(diag::containsAll);
+    }
+
+    public boolean containsAll(List<Set<Constraint>> allDiag, Set<Constraint> diag) {
+        return allDiag.stream().anyMatch(adiag -> adiag.containsAll(diag));
+    }
 }

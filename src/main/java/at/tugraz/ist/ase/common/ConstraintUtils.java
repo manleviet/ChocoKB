@@ -40,7 +40,7 @@ public final class ConstraintUtils {
     }
 
     public boolean isMinimal(Set<Constraint> diag, List<Set<Constraint>> allDiag) {
-        return allDiag.stream().noneMatch(diag::containsAll);
+        return allDiag.stream().noneMatch(diag::contains);
     }
 
     public boolean containsAll(List<Set<Constraint>> allDiag, Set<Constraint> diag) {

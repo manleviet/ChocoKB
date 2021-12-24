@@ -59,6 +59,8 @@ class ConstraintUtilsTest {
                 () -> assertTrue(containsAll(allDiag, diag2), "[containsAll] allDiag doesn't contain diag2"),
                 () -> assertTrue(containsAll(allDiag, diag3), "[containsAll] allDiag contains diag3"),
                 () -> assertTrue(containsAll(allDiag, diag4), "[containsAll] allDiag doesn't contain diag4"),
+                () -> assertFalse(containsAll(allDiag, diag5), "[containsAll] allDiag contains diag5"),
+                () -> assertFalse(containsAll(allDiag, diag6), "[containsAll] allDiag contains diag6"),
 
                 () -> assertTrue(allDiag.contains(diag1), "allDiag doesn't contain diag1"),
                 () -> assertTrue(allDiag.contains(diag2), "allDiag doesn't contain diag2"),

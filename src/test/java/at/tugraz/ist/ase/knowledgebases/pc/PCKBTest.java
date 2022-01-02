@@ -30,6 +30,16 @@ class PCKBTest {
     }
 
     @Test
+    void testDomains() {
+        int counter = 0;
+        for (Domain domain : kb.getDomainList()) {
+            counter += domain.getValues().size();
+        }
+
+        assertEquals(384, counter);
+    }
+
+    @Test
     void testPCKB() {
         assertEquals("KB(name=PCConfigurationProblem, source=https://www.itu.dk/research/cla/externals/clib/)", kb.toString());
         assertTrue(kb.getModelKB().getSolver().solve());

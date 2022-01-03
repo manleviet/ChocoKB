@@ -12,6 +12,7 @@ import at.tugraz.ist.ase.knowledgebases.core.Constraint;
 import at.tugraz.ist.ase.knowledgebases.core.Domain;
 import at.tugraz.ist.ase.knowledgebases.core.IntVariable;
 import at.tugraz.ist.ase.knowledgebases.core.Variable;
+import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.IntVar;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static org.chocosolver.solver.search.strategy.Search.activityBasedSearch;
+import static org.chocosolver.solver.search.strategy.Search.minDomLBSearch;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PCKBTest {
@@ -27,6 +30,28 @@ class PCKBTest {
     @BeforeAll
     static void setUp() {
         kb = new PCKB(true);
+    }
+
+    @Test
+    void testSomeTestCases() {
+        kb = new PCKB(false);
+        Model model = kb.getModelKB();
+
+        // pro_freqD=200 -violated
+        org.chocosolver.solver.constraints.Constraint c2 = model.arithm(kb.getIntVar("pro_freqD"), "=", kb.getIntValue("pro_freqD", "200"));
+        model.post(c2);
+
+        assertFalse(model.getSolver().solve());
+        model.unpost(c2);
+        model.getSolver().reset();
+
+        // pro_freqD=800 - non-violated
+        org.chocosolver.solver.constraints.Constraint c1 = model.arithm(kb.getIntVar("pro_freqD"), "=", kb.getIntValue("pro_freqD", "800"));
+        model.post(c1);
+
+        assertTrue(model.getSolver().solve());
+        model.unpost(c1);
+        model.getSolver().reset();
     }
 
     @Test

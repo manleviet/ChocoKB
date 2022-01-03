@@ -256,7 +256,7 @@ public class PCKB extends KB {
                 .chocoValues(List.of(512, 1024))
                 .build());
         domainList.add(Domain.builder()
-                .name("pc_clockD")
+                .name("ram2_presentD")
                 .values(List.of("512", "1024"))
                 .chocoValues(List.of(512, 1024))
                 .build());

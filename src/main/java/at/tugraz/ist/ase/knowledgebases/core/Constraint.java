@@ -36,8 +36,14 @@ public class Constraint {
     public void addChocoConstraints(Model model, int startIdx, int endIdx, boolean hasNegativeConstraints) {
         org.chocosolver.solver.constraints.Constraint[] constraints = model.getCstrs();
 
+        if (hasNegativeConstraints) {
+            endIdx = endIdx - 2;
+        } else {
+            endIdx = endIdx - 1;
+        }
+
         int index = startIdx;
-        while (index <= endIdx - 2) {
+        while (index <= endIdx) {
             addChocoConstraint(constraints[index]);
             if (hasNegativeConstraints) {
                 addNegChocoConstraint(constraints[index]);

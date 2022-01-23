@@ -6,21 +6,21 @@
 
     <groupId>at.tugraz.ist.ase</groupId>
     <artifactId>choco-kb</artifactId>
-    <version>1.0.5</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>16</maven.compiler.source>
-        <maven.compiler.target>16</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.choco-solver</groupId>
-            <artifactId>choco-solver</artifactId>
-            <version>4.10.2</version>
+            <groupId>at.tugraz.ist.ase</groupId>
+            <artifactId>fm</artifactId>
+            <version>1.2</version>
         </dependency>
     </dependencies>
 

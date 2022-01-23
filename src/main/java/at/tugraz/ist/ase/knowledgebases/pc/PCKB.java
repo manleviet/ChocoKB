@@ -35,7 +35,7 @@ public class PCKB extends KB {
 
     @Override
     public void reset(boolean hasNegativeConstraints) {
-        log.debug("{}Creating PCKB >>>", LoggerUtils.tab);
+        log.trace("{}Creating PCKB >>>", LoggerUtils.tab);
         LoggerUtils.indent();
 
         modelKB = new Model(name);

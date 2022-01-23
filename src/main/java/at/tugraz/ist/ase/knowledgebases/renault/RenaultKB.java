@@ -38,7 +38,7 @@ public class RenaultKB extends KB {
 
     @Override
     public void reset(boolean hasNegativeConstraints) {
-        log.debug("{}Creating RenaultKB >>>", LoggerUtils.tab);
+        log.trace("{}Creating RenaultKB >>>", LoggerUtils.tab);
         LoggerUtils.indent();
 
         modelKB = new Model(name);

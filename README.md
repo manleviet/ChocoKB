@@ -15,7 +15,7 @@ Add the below script in your pom file:
 <dependency>
   <groupId>at.tugraz.ist.ase</groupId>
   <artifactId>choco-kb</artifactId>
-  <version>1.0.5</version>
+  <version>1.2</version>
 </dependency>
 ```
 

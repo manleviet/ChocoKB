@@ -1,7 +1,7 @@
 /*
  * ChocoKB: Constraint-based Knowledge Bases for Choco Solver
  *
- * Copyright (c) 2022.
+ * Copyright (c) 2022-2022
  *
  * @author: Viet-Man Le (vietman.le@ist.tugraz.at)
  */

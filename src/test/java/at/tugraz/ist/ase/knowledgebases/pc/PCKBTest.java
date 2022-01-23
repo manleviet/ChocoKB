@@ -34,7 +34,7 @@ class PCKBTest {
 
     @Test
     void testSomeTestCases() {
-        kb = new PCKB(false);
+        PCKB kb = new PCKB(false);
         Model model = kb.getModelKB();
 
         // pro_freqD=200 -violated

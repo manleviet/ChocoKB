@@ -33,7 +33,7 @@ public class Constraint {
         log.trace("{}Created Constraint [cstr={}]", LoggerUtils.tab, constraint);
     }
 
-    public void addChocoConstraints(Model model, int startIdx, int endIdx, boolean hasNegativeConstraints) {
+    public void addChocoConstraints(@NonNull Model model, int startIdx, int endIdx, boolean hasNegativeConstraints) {
         org.chocosolver.solver.constraints.Constraint[] constraints = model.getCstrs();
 
         if (hasNegativeConstraints) {

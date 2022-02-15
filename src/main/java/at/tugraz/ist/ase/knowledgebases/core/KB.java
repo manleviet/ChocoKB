@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkElementIndex;
 
 @Getter
 @ToString
@@ -75,7 +76,7 @@ public abstract class KB {
     }
 
     public Variable getVariable(int index) {
-        checkArgument(index >= 0 && index < variableList.size(), "Index out of bounds");
+        checkElementIndex(index, variableList.size(), "Index out of bounds");
 
         return variableList.get(index);
     }
@@ -116,7 +117,7 @@ public abstract class KB {
     }
 
     public Constraint getConstraint(int index) {
-        checkArgument(index >= 0 && index < constraintList.size(), "Index out of bounds");
+        checkElementIndex(index, constraintList.size(), "Index out of bounds");
 
         return constraintList.get(index);
     }

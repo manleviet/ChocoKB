@@ -6,6 +6,7 @@ Knowledge bases:
 
 1. [PC](https://www.itu.dk/research/cla/externals/clib/)
 2. [Renault](https://www.itu.dk/research/cla/externals/clib/)
+3. [Feature Models](http://www.splot-research.org)
 
 ## How to use
 

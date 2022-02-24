@@ -1,7 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="manleviet">
+  <settings default="ChocoKB">
     <module2copyright>
-      <element module="All" copyright="manleviet" />
+      <element module="All" copyright="ChocoKB" />
     </module2copyright>
   </settings>
 </component>

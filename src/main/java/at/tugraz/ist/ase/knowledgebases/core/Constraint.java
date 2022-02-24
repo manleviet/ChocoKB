@@ -18,6 +18,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkElementIndex;
+
 @Getter
 @Slf4j
 public class Constraint {
@@ -33,8 +36,12 @@ public class Constraint {
         log.trace("{}Created Constraint [cstr={}]", LoggerUtils.tab, constraint);
     }
 
-    public void addChocoConstraints(Model model, int startIdx, int endIdx, boolean hasNegativeConstraints) {
+    public void addChocoConstraints(@NonNull Model model, int startIdx, int endIdx, boolean hasNegativeConstraints) {
         org.chocosolver.solver.constraints.Constraint[] constraints = model.getCstrs();
+
+        checkElementIndex(startIdx, constraints.length, "startIdx must be within the range of constraints");
+        checkElementIndex(endIdx, constraints.length, "endIdx must be within the range of constraints");
+        checkArgument(startIdx <= endIdx, "startIdx must be <= endIdx");
 
         if (hasNegativeConstraints) {
             endIdx = endIdx - 2;

@@ -18,7 +18,6 @@ import org.chocosolver.solver.variables.IntVar;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkElementIndex;
 
 @Getter

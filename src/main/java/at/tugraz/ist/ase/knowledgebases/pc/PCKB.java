@@ -269,7 +269,7 @@ public class PCKB extends KB {
                 .build());
 
         LoggerUtils.outdent();
-        log.debug("{}<<< Created domains", LoggerUtils.tab);
+        log.trace("{}<<< Created domains", LoggerUtils.tab);
     }
 
     public void defineVariables (){
@@ -294,7 +294,7 @@ public class PCKB extends KB {
         }
 
         LoggerUtils.outdent();
-        log.debug("{}<<< Created variables", LoggerUtils.tab);
+        log.trace("{}<<< Created variables", LoggerUtils.tab);
     }
 
     public void defineConstraints(boolean hasNegativeConstraints) {
@@ -831,7 +831,7 @@ public class PCKB extends KB {
         addConstraint("constraint 36", chocoConstraint, startIdx, hasNegativeConstraints);
 
         LoggerUtils.outdent();
-        log.debug("{}<<< Created constraints", LoggerUtils.tab);
+        log.trace("{}<<< Created constraints", LoggerUtils.tab);
     }
 
     private void addConstraint(String constraintName, org.chocosolver.solver.constraints.Constraint chocoConstraint, int startIdx, boolean hasNegativeConstraints) {

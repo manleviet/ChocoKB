@@ -72,7 +72,7 @@ public class FMKB extends KB {
         }
 
         LoggerUtils.outdent();
-        log.debug("{}<<< Created variables", LoggerUtils.tab);
+        log.trace("{}<<< Created variables", LoggerUtils.tab);
     }
 
     public void defineConstraints(boolean hasNegativeConstraints) {
@@ -189,7 +189,7 @@ public class FMKB extends KB {
         }
 
         LoggerUtils.outdent();
-        log.debug("{}<<< Created constraints", LoggerUtils.tab);
+        log.trace("{}<<< Created constraints", LoggerUtils.tab);
     }
 
     private void addConstraintsToModel(boolean hasNegativeConstraints, int startIdx, LogOp logOp, LogOp negLogOp, Relationship relationship) {

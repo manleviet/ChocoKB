@@ -666,7 +666,7 @@ public class RenaultKB extends KB {
                 .build());
 
         LoggerUtils.outdent();
-        log.debug("{}<<< Created domains", LoggerUtils.tab);
+        log.trace("{}<<< Created domains", LoggerUtils.tab);
     }
 
     public void defineVariables (){
@@ -695,7 +695,7 @@ public class RenaultKB extends KB {
         }
 
         LoggerUtils.outdent();
-        log.debug("{}<<< Created variables", LoggerUtils.tab);
+        log.trace("{}<<< Created variables", LoggerUtils.tab);
     }
 
     public void defineConstraints(boolean hasNegativeConstraints) {
@@ -738,7 +738,7 @@ public class RenaultKB extends KB {
         }
 
         LoggerUtils.outdent();
-        log.debug("{}<<< Created constraints", LoggerUtils.tab);
+        log.trace("{}<<< Created constraints", LoggerUtils.tab);
     }
 
     @SneakyThrows

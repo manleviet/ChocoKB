@@ -60,6 +60,17 @@ public final class ConstraintUtils {
         log.trace("{}Posted constraints", LoggerUtils.tab);
     }
 
+    public void postConstraint(Constraint cstr, Model toModel, boolean negative) {
+        if (negative) {
+            cstr.getNegChocoConstraints().forEach(toModel::post);
+            incrementCounter(COUNTER_POST_CONSTRAINT, cstr.getNegChocoConstraints().size());
+        } else {
+            cstr.getChocoConstraints().forEach(toModel::post);
+            incrementCounter(COUNTER_POST_CONSTRAINT, cstr.getChocoConstraints().size());
+        }
+        log.trace("{}Posted constraints", LoggerUtils.tab);
+    }
+
     public boolean isMinimal(Set<Constraint> diag, List<Set<Constraint>> allDiag) {
         return allDiag.parallelStream().noneMatch(diag::containsAll);
     }

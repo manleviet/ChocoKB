@@ -46,5 +46,14 @@ And the below script in the settings.xml file:
             </repositories>
         </profile>
     </profiles>
+    
+    <servers>
+    <server>
+      <id>github</id>
+      <username>USERNAME</username>
+      <password>TOKEN</password>
+    </server>
+  </servers>
 </settings>
 ```
+Replacing USERNAME with your GitHub username, and TOKEN with your personal access token (see [Creating a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)).

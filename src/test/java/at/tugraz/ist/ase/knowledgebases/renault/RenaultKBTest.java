@@ -150,12 +150,12 @@ class RenaultKBTest {
                         assertEquals(expectedDomainList.get(i), var.getDomain().toString());
                     }
                 },
-                () -> assertEquals(3164122, kb.getModelKB().getNbVars()));
+                () -> assertEquals(3178088, kb.getModelKB().getNbVars()));
     }
 
     @Test
     public void testDefineConstraints() {
-        assertAll(() -> assertEquals(1680428, kb.getModelKB().getNbCstrs()),
+        assertAll(() -> assertEquals(1694394, kb.getModelKB().getNbCstrs()),
                 () -> assertEquals(113, kb.getNumConstraints()),
                 () -> {
                     for (Constraint constraint : kb.getConstraintList()) {

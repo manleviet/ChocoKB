@@ -42,7 +42,7 @@ class FMKBTest {
                 "High Resolution", "E-ink");
 
         assertAll(() -> assertEquals(12, kb.getNumVariables()),
-                () -> assertEquals("Smartwatch", kb.getName()),
+                () -> assertEquals("Smartwatch.sxfm", kb.getName()),
                 () -> {
                     for (int i = 0; i < expectedVariables.size(); i++) {
                         assertEquals(expectedVariables.get(i), kb.getVariable(i).getName());

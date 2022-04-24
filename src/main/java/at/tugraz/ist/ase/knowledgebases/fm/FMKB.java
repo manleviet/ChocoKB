@@ -198,6 +198,10 @@ public class FMKB extends KB {
         Constraint constraint = new Constraint(relationship.getConfRule());
         addConstraint(constraint, relationship, startIdx, modelKB.getNbCstrs() - 1);
 
+        if (relationship.isType(RelationshipType.ALTERNATIVE)) {
+            addNegConstraint(constraint, startIdx + 1, startIdx + 1);
+        }
+
         startIdx = modelKB.getNbCstrs();
         if (hasNegativeConstraints) {
             modelKB.addClauses(negLogOp);
@@ -241,6 +245,37 @@ public class FMKB extends KB {
         }
     }
 
+//    /**
+//     * Create a {@link LogOp} that represent to an ALTERNATIVE relationship.
+//     * The form of rule is {C1 <=> (not C2 /\ ... /\ not Cn /\ P) /\
+//     *                      C2 <=> (not C1 /\ ... /\ not Cn /\ P) /\
+//     *                      ... /\
+//     *                      Cn <=> (not C1 /\ ... /\ not Cn-1 /\ P)
+//     *
+//     * @param relationship - a {@link Relationship} of {@link FeatureModel}
+//     * @return A {@link LogOp} that represent to an ALTERNATIVE relationship
+//     * @throws IllegalArgumentException when couldn't find the corresponding variable in the model
+//     */
+//    private LogOp getLogOpOfAlternativeRelationship(Relationship relationship, boolean negative) throws IllegalArgumentException {
+//        LogOp logOp;
+//        if (negative) { // negative constraint
+//            logOp = LogOp.nand(); // an LogOp of NAND operators
+//        } else {
+//            logOp = LogOp.and(); // an LogOp of AND operators
+//        }
+//        BasicRelationship basicRelationship = (BasicRelationship) relationship;
+//        for (int i = 0; i < basicRelationship.getRightSide().size(); i++) {
+//            BoolVar rightVar = getVarWithName(basicRelationship.getRightSide().get(i).getName());
+//            // (not C2 /\ ... /\ not Cn /\ P)
+//            LogOp rightSide = getRightSideOfAlternativeRelationship(basicRelationship.getLeftSide().getName(), basicRelationship.getRightSide(), i);
+//            // {C1 <=> (not C2 /\ ... /\ not Cn /\ P)}
+//            LogOp part = LogOp.ifOnlyIf(rightVar, rightSide);
+//
+//            logOp.addChild(part);
+//        }
+//        return logOp;
+//    }
+
     /**
      * Create a {@link LogOp} that represent to an ALTERNATIVE relationship.
      * The form of rule is {C1 <=> (not C2 /\ ... /\ not Cn /\ P) /\
@@ -253,21 +288,35 @@ public class FMKB extends KB {
      * @throws IllegalArgumentException when couldn't find the corresponding variable in the model
      */
     private LogOp getLogOpOfAlternativeRelationship(Relationship relationship, boolean negative) throws IllegalArgumentException {
-        LogOp logOp;
-        if (negative) { // negative constraint
-            logOp = LogOp.nand(); // an LogOp of NAND operators
-        } else {
-            logOp = LogOp.and(); // an LogOp of AND operators
-        }
+        LogOp logOp = LogOp.or(); // an LogOp of OR operators
         BasicRelationship basicRelationship = (BasicRelationship) relationship;
+        BoolVar[] vars = new BoolVar[basicRelationship.getRightSide().size()];
         for (int i = 0; i < basicRelationship.getRightSide().size(); i++) {
-            BoolVar rightVar = getVarWithName(basicRelationship.getRightSide().get(i).getName());
-            // (not C2 /\ ... /\ not Cn /\ P)
-            LogOp rightSide = getRightSideOfAlternativeRelationship(basicRelationship.getLeftSide().getName(), basicRelationship.getRightSide(), i);
-            // {C1 <=> (not C2 /\ ... /\ not Cn /\ P)}
-            LogOp part = LogOp.ifOnlyIf(rightVar, rightSide);
+            vars[i] = getVarWithName(basicRelationship.getRightSide().get(i).getName());
+        }
 
-            logOp.addChild(part);
+        BoolVar leftVar = getVarWithName(basicRelationship.getLeftSide().getName());
+        if (negative) { // negative constraint
+            BoolVar notEqualVar = modelKB.boolVar();
+            modelKB.sum(vars, "!=", 1).reifyWith(notEqualVar); // B + C + D != 1
+
+            // LogOp.or(LogOp.and(A.not(), LogOp.or(B, C, D),
+            //          LogOp.and(A, notEqualVar)));
+            logOp.addChild(LogOp.and(leftVar.not(), LogOp.or(vars)));
+            logOp.addChild(LogOp.and(leftVar, notEqualVar));
+        } else {
+            BoolVar equalVar = modelKB.boolVar();
+            modelKB.sum(vars, "=", 1).reifyWith(equalVar); // B + C + D = 1
+
+            // LogOp.or(LogOp.and(A.not(), B.not(), C.not(), D.not()),
+            //          LogOp.and(A, equalVar));
+            LogOp rule1 = LogOp.and(leftVar.not());
+            for (BoolVar var : vars) {
+                rule1.addChild(var.not());
+            }
+
+            logOp.addChild(rule1);
+            logOp.addChild(LogOp.and(leftVar, equalVar));
         }
         return logOp;
     }

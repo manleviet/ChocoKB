@@ -9,6 +9,7 @@
 package at.tugraz.ist.ase.knowledgebases.fm;
 
 import at.tugraz.ist.ase.fm.core.FeatureModel;
+import at.tugraz.ist.ase.fm.parser.FeatureIDEParser;
 import at.tugraz.ist.ase.fm.parser.FeatureModelParserException;
 import at.tugraz.ist.ase.fm.parser.SXFMParser;
 import at.tugraz.ist.ase.knowledgebases.core.BoolVariable;
@@ -33,6 +34,13 @@ class FMKBTest {
         featureModel = parser.parse(fileFM);
 
         kb = new FMKB(featureModel, true);
+
+        kb.getConstraintList().forEach(c -> {
+            System.out.println(c);
+            c.getChocoConstraints().forEach(System.out::println);
+            System.out.println("not " + c);
+            c.getNegChocoConstraints().forEach(System.out::println);
+        });
     }
 
     @Test
@@ -42,7 +50,7 @@ class FMKBTest {
                 "High Resolution", "E-ink");
 
         assertAll(() -> assertEquals(12, kb.getNumVariables()),
-                () -> assertEquals("Smartwatch.sxfm", kb.getName()),
+                () -> assertEquals("smartwatch.sxfm", kb.getName()),
                 () -> {
                     for (int i = 0; i < expectedVariables.size(); i++) {
                         assertEquals(expectedVariables.get(i), kb.getVariable(i).getName());
@@ -74,10 +82,15 @@ class FMKBTest {
                 List.of("ARITHM ([Connector + not(GPS) >= 1])", "ARITHM ([Connector + not(Cellular) >= 1])",
                         "ARITHM ([Connector + not(Wifi) >= 1])", "ARITHM ([Connector + not(Bluetooth) >= 1])",
                         "SUM ([not(Connector) + Bluetooth + Wifi + Cellular + GPS >= 1])"),
-                List.of("ARITHM ([Screen + not(Analog) >= 1])", "ARITHM ([Screen + not(High Resolution) >= 1])",
-                        "ARITHM ([Screen + not(E-ink) >= 1])", "ARITHM ([not(Analog) + not(High Resolution) >= 1])",
-                        "ARITHM ([not(Analog) + not(E-ink) >= 1])", "ARITHM ([not(High Resolution) + not(E-ink) >= 1])",
-                        "SUM ([not(Screen) + E-ink + High Resolution + Analog >= 1])"),
+                List.of("BV_1 = [0,1]=>SUM ([E-ink + High Resolution + Analog = 1]), !BV_1 = [0,1]=>SUM ([E-ink + High Resolution + Analog != 1])",
+                        "BV_2 = [0,1]=>SUM ([E-ink + High Resolution + Analog != 1]), !BV_2 = [0,1]=>SUM ([E-ink + High Resolution + Analog = 1])",
+                        "ARITHM ([Screen + not(Analog) >= 1])",
+                        "ARITHM ([Screen + not(High Resolution) >= 1])",
+                        "ARITHM ([Screen + not(E-ink) >= 1])",
+                        "ARITHM ([not(Screen) + BV_1 >= 1])",
+                        "ARITHM ([BV_1 + not(Analog) >= 1])",
+                        "ARITHM ([BV_1 + not(High Resolution) >= 1])",
+                        "ARITHM ([BV_1 + not(E-ink) >= 1])"),
                 List.of("ARITHM ([High Resolution + not(Camera) >= 1])"),
                 List.of("ARITHM ([GPS + not(Compass) >= 1])"),
                 List.of("ARITHM ([not(Cellular) + not(Analog) >= 1])"),
@@ -92,8 +105,10 @@ class FMKBTest {
                 List.of("ARITHM ([not(Connector) + not(GPS) >= 1])", "ARITHM ([not(Connector) + not(Cellular) >= 1])",
                         "ARITHM ([not(Connector) + not(Wifi) >= 1])", "ARITHM ([not(Connector) + not(Bluetooth) >= 1])",
                         "SUM ([Bluetooth + Wifi + Cellular + GPS + Connector >= 1])"),
-                List.of("SUM ([E-ink + High Resolution + Analog + Screen >= 1])", "SUM ([not(E-ink) + not(Screen) + High Resolution + Analog >= 1])",
-                        "SUM ([not(High Resolution) + not(Screen) + E-ink + Analog >= 1])", "SUM ([not(Analog) + not(Screen) + E-ink + High Resolution >= 1])"),
+                List.of("BV_2 = [0,1]=>SUM ([E-ink + High Resolution + Analog != 1]), !BV_2 = [0,1]=>SUM ([E-ink + High Resolution + Analog = 1])",
+                        "ARITHM ([not(Screen) + BV_2 >= 1])",
+                        "SUM ([E-ink + High Resolution + Analog + Screen >= 1])",
+                        "SUM ([BV_2 + E-ink + High Resolution + Analog >= 1])"),
                 List.of("ARITHM ([Camera = 1])", "ARITHM ([not(High Resolution) = 1])"),
                 List.of("ARITHM ([Compass = 1])", "ARITHM ([not(GPS) = 1])"),
                 List.of("ARITHM ([Cellular = 1])", "ARITHM ([Analog = 1])"),

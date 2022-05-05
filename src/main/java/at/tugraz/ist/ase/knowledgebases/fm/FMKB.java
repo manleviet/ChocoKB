@@ -198,12 +198,13 @@ public class FMKB extends KB {
         Constraint constraint = new Constraint(relationship.getConfRule());
         addConstraint(constraint, relationship, startIdx, modelKB.getNbCstrs() - 1);
 
-        if (relationship.isType(RelationshipType.ALTERNATIVE)) {
-            addNegConstraint(constraint, startIdx + 1, startIdx + 1);
-        }
-
-        startIdx = modelKB.getNbCstrs();
         if (hasNegativeConstraints) {
+            if (relationship.isType(RelationshipType.ALTERNATIVE)) {
+                addNegConstraint(constraint, startIdx + 1, startIdx + 1);
+            }
+
+            startIdx = modelKB.getNbCstrs();
+
             modelKB.addClauses(negLogOp);
             addNegConstraint(constraint, startIdx, modelKB.getNbCstrs() - 1);
         }

@@ -9,11 +9,13 @@
 package at.tugraz.ist.ase.common;
 
 import at.tugraz.ist.ase.knowledgebases.core.Constraint;
+import com.google.common.collect.Sets;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.chocosolver.solver.Model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -43,10 +45,7 @@ public final class ConstraintUtils {
             count++;
 
             sb.append(mess).append(" ").append(count).append(":\n");
-//            System.out.println(mess + " " + count + ":");
-//            sb.append(String.join("\n", diag));
             sb.append(convertToString(diag)).append("\n");
-//            diag.forEach(System.out::println);
         }
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
@@ -69,6 +68,23 @@ public final class ConstraintUtils {
             incrementCounter(COUNTER_POST_CONSTRAINT, cstr.getChocoConstraints().size());
         }
         log.trace("{}Posted constraints", LoggerUtils.tab);
+    }
+
+    /**
+     * Split a set of {@link Constraint}s into two sets
+     *
+     * @param C an input set of {@link Constraint}s
+     * @param C1 the first output set - needs to be initialized
+     * @param C2 the second output set - needs to be initialized
+     */
+    public void split(Set<Constraint> C, Set<Constraint> C1, Set<Constraint> C2) {
+        int k = C.size() / 2; // k = sizeC/2;
+        // C1 = {c1..ck}; C2 = {ck+1..cn};
+        List<Constraint> firstSubList = new ArrayList<>(C).subList(0, k);
+        List<Constraint> secondSubList = new ArrayList<>(C).subList(k, C.size());
+
+        C1.addAll(firstSubList);
+        C2.addAll(secondSubList);
     }
 
     public boolean isMinimal(Set<Constraint> diag, List<Set<Constraint>> allDiag) {

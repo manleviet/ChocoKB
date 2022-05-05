@@ -94,21 +94,6 @@ class FMKBTest3 {
                 List.of("ARITHM ([not(ABtesting) + not(nonlicense) >= 1])")
                 );
 
-//        List<List<String>> expectedNegConstraints = List.of(
-//                List.of("ARITHM ([survey + pay >= 1])", "ARITHM ([not(survey) + not(pay) >= 1])"),
-//                List.of("ARITHM ([survey + ABtesting >= 1])", "ARITHM ([not(survey) + not(ABtesting) >= 1])"),
-//                List.of("ARITHM ([statistics = 1])", "ARITHM ([not(survey) = 1])"),
-//                List.of("ARITHM ([survey + qa >= 1])", "ARITHM ([not(survey) + not(qa) >= 1])"),
-//                List.of("BV_2 = [0,1]=>ARITHM ([PropNotEqualXY_C(license, nonlicense)]), !BV_2 = [0,1]=>ARITHM ([license = [0,1] + nonlicense = [0,1] = 1])",
-//                        "ARITHM ([not(pay) + BV_2 >= 1])",
-//                        "SUM ([nonlicense + license + pay >= 1])",
-//                        "SUM ([BV_2 + nonlicense + license >= 1])"),
-//                List.of("ARITHM ([not(qa) + not(multiplechoice) >= 1])", "ARITHM ([not(qa) + not(singlechoice) >= 1])",
-//                        "SUM ([singlechoice + multiplechoice + qa >= 1])"),
-//                List.of("ARITHM ([ABtesting = 1])", "ARITHM ([not(statistics) = 1])"),
-//                List.of("ARITHM ([ABtesting = 1])", "ARITHM ([nonlicense = 1])")
-//                );
-
         assertEquals(8, kb.getNumConstraints());
 
         assertAll(() -> {

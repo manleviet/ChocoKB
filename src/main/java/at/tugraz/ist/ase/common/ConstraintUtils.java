@@ -31,6 +31,7 @@ public final class ConstraintUtils {
     public final String COUNTER_UNPOST_CONSTRAINT = "The number of unpost constraints:";
     public final String COUNTER_POST_CONSTRAINT = "The number of post constraints:";
     public final String COUNTER_CONSTAINS_CONSTRAINT = "The number of contains calls:";
+    public final String COUNTER_SPLIT_SET = "The number of split set:";
 
     public String convertToString(@NonNull Set<Constraint> ac) {
         return ac.stream().map(Constraint::toString).collect(Collectors.joining("\n"));
@@ -85,6 +86,8 @@ public final class ConstraintUtils {
 
         C1.addAll(firstSubList);
         C2.addAll(secondSubList);
+
+        incrementCounter(COUNTER_SPLIT_SET);
     }
 
     public boolean isMinimal(Set<Constraint> diag, List<Set<Constraint>> allDiag) {
